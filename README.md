@@ -1,8 +1,8 @@
 # Sprocket — AI for Kids
 
 An iOS app that teaches kids **what AI is, how it works, what prompts are, and
-how to use it responsibly** — in simple, fun, tiered lessons. Working title
-("Sprocket" is the mascot and a nod to bite-sized learning); rename freely.
+how to use it responsibly** — in simple, fun, tiered lessons. "Sprocket" is the
+friendly-robot mascot (a sprocket is a gear — a little thinking machine).
 
 Built per the validated product brief. Deliberately mirrors the sibling
 **Fernby** app's conventions so the two stay mentally interchangeable: iOS 17,
@@ -21,11 +21,19 @@ store, a "never punish a wrong answer" ethic, and forced light mode.
 - **Three reusable mini-games:** two-bin **Sort** ("Robot or Not?", "Cat or
   Dog?"), **Decision-Tree** walk, and **Prompt Improver**.
 - **Parent dashboard** (behind a grown-up math gate): progress, Five-Big-Ideas
-  breakdown, badges, read-aloud & haptics toggles, track switch, data controls.
+  breakdown, badges, read-aloud & haptics toggles, track switch, data controls,
+  and Sprocket Plus status.
+- **Sprocket Plus subscription** (StoreKit 2): the first unit of each track is
+  free; the rest unlocks with a family plan (one price, every child, every
+  track). Designed around Kids Category rules — a **child never sees a purchase
+  button**: tapping a locked lesson shows a gentle "ask a grown-up" prompt that
+  routes *through the parent gate* to the paywall. Monthly / Annual with a
+  7-day free trial.
 - **Private by design:** no accounts, no ads, no third-party tracking, fully
-  offline; on-device speech only. Privacy manifest declares zero data
-  collection — the safest posture for the App Store Kids Category and the one
-  that clears the most COPPA/GDPR-K obligations up front.
+  offline (aside from the App Store purchase itself); on-device speech only.
+  Privacy manifest declares zero data collection — the safest posture for the
+  App Store Kids Category and the one that clears the most COPPA/GDPR-K
+  obligations up front.
 
 ## Layout
 
@@ -69,6 +77,19 @@ Set as `SIMCTL_CHILD_*` env vars when launching in the simulator:
 | `SPROCKET_DEBUG_UNIT=sprouts.1` | Jump straight into a unit's lesson player |
 | `SPROCKET_DEBUG_SCREEN=2` | Start that lesson at screen index N (e.g. a mini-game) |
 | `SPROCKET_DEBUG_VIEW=parent` | Open the parent dashboard directly |
+| `SPROCKET_DEBUG_VIEW=paywall` | Open the Sprocket Plus paywall directly |
+| `SPROCKET_DEBUG_PLUS=1` | Force an active subscription (unlock all content) |
+
+## Subscription / StoreKit
+
+`Store.storekit` defines the products (monthly `…​.monthly`, annual `…​.annual`,
+7-day free trial, family-shareable) and is wired into the Sprocket scheme for
+local testing — run from Xcode and real products load with no App Store Connect
+setup. Launching via `simctl` doesn't inject the config, so the paywall falls
+back to DEBUG placeholder prices; use `SPROCKET_DEBUG_PLUS=1` to test the
+unlocked state. For production, create matching product IDs in App Store
+Connect. The free/premium line lives in `Models/Gating.swift`
+(`freeUnitsPerTrack`).
 
 ## Adding content
 
