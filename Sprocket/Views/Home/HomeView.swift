@@ -17,13 +17,14 @@ struct HomeView: View {
 
     private enum GateTarget { case parent, paywall }
     private enum ActiveSheet: Identifiable {
-        case gate(GateTarget), parent, unlock, paywall
+        case gate(GateTarget), parent, unlock, paywall, trophies
         var id: String {
             switch self {
             case .gate(let t): return "gate-\(t == .parent ? "p" : "pay")"
-            case .parent:  return "parent"
-            case .unlock:  return "unlock"
-            case .paywall: return "paywall"
+            case .parent:   return "parent"
+            case .unlock:   return "unlock"
+            case .paywall:  return "paywall"
+            case .trophies: return "trophies"
             }
         }
     }
@@ -61,6 +62,8 @@ struct HomeView: View {
                     onLater: { activeSheet = nil })
             case .paywall:
                 PaywallView()
+            case .trophies:
+                TrophyRoomView()
             }
         }
         .onAppear { Haptics.shared.prepareAll() }
@@ -81,6 +84,14 @@ struct HomeView: View {
             Spacer()
             statChip(icon: "bolt.fill", value: "\(store.xp)", tint: Theme.spark)
             statChip(icon: "flame.fill", value: "\(store.currentStreak)", tint: Theme.sprouts)
+            Button {
+                Haptics.shared.tap(); activeSheet = .trophies
+            } label: {
+                Image(systemName: "trophy.fill")
+                    .font(.system(size: 20))
+                    .foregroundStyle(store.tier.color)
+            }
+            .accessibilityLabel("My trophies")
             Button {
                 Haptics.shared.tap(); activeSheet = .gate(.parent)
             } label: {

@@ -45,6 +45,8 @@ struct SprocketApp: App {
             ParentDashboardView()
         } else if env["SPROCKET_DEBUG_VIEW"] == "paywall" {
             PaywallView()
+        } else if env["SPROCKET_DEBUG_VIEW"] == "trophies" {
+            TrophyRoomView()
         } else {
             RootView()
         }

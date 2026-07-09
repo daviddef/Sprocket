@@ -41,6 +41,7 @@
 		E9C263090A1B4FFB776ECE9E /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE8ECB848DC208A66649D3F /* PaywallView.swift */; };
 		F0C7EC9AB4758B2D10D01A18 /* ReflectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39537EBA001771126875BF6A /* ReflectView.swift */; };
 		F3472EBD60D1A59185B5D70E /* RewardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4518EC2FE743F47C617C585A /* RewardView.swift */; };
+		F58435391EBBAF17CCE1764A /* TrophyRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8E56D795A25DB0D67679E47 /* TrophyRoomView.swift */; };
 		FD6321B2071C637141646BAA /* ParentDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62228ADA18A7BF238E77020C /* ParentDashboardView.swift */; };
 		FE8BC0C9570FC22EAB3745EB /* BigIdea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0911AA41A18AD3C6E17EF947 /* BigIdea.swift */; };
 		FF5062F67826947C887727F7 /* LessonPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6B1C239DDE861DBF54A201 /* LessonPlayerView.swift */; };
@@ -85,6 +86,7 @@
 		C391D47FB730E88E033FF9E7 /* LearnerProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnerProfile.swift; sourceTree = "<group>"; };
 		C5E5DDD5826FFE1F212250DD /* DecisionTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecisionTreeView.swift; sourceTree = "<group>"; };
 		C5F91AB776EDBDCAFA2346F9 /* UnitNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitNodeView.swift; sourceTree = "<group>"; };
+		E8E56D795A25DB0D67679E47 /* TrophyRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyRoomView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -130,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				585F3484D7607B96E3DA7779 /* HomeView.swift */,
+				E8E56D795A25DB0D67679E47 /* TrophyRoomView.swift */,
 				C5F91AB776EDBDCAFA2346F9 /* UnitNodeView.swift */,
 				AD630EE33E02F84BA562D2E8 /* UnlockPromptView.swift */,
 			);
@@ -355,6 +358,7 @@
 				9A7CED87731D4AC03E65A55A /* TeachCardView.swift in Sources */,
 				7ADE663ECD544EA379718E12 /* Theme.swift in Sources */,
 				D3CEA235443C59612FDA300B /* Tier.swift in Sources */,
+				F58435391EBBAF17CCE1764A /* TrophyRoomView.swift in Sources */,
 				A288EB93D24398A4AB8FBFC0 /* UnitNodeView.swift in Sources */,
 				1A6D148CAD07439DF666C7A7 /* UnitProgress.swift in Sources */,
 				D7052EF6BFF0CAF9BD477097 /* UnlockPromptView.swift in Sources */,
