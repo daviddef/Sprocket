@@ -29,12 +29,12 @@
 		B0AB42AD5FA0CD271896AAA2 /* Curriculum+Explorers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF5669421335D44B2C262B /* Curriculum+Explorers.swift */; };
 		B82E70E2D78C35194E00893C /* ProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A25CDFD9481E5C403B585EE /* ProgressStore.swift */; };
 		BC1FC93D613973D8AF89E7FE /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 0F4E48499740DA716EA57C50 /* PrivacyInfo.xcprivacy */; };
+		C3FA98CD7E8E930FC483CDBB /* SprocketButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03047D92F08A31454A83C37A /* SprocketButtonStyle.swift */; };
 		D3CEA235443C59612FDA300B /* Tier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ECCC124E2C858C704D8DC72 /* Tier.swift */; };
 		D507DBEA779A1D11D51DA6CA /* SprocketApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA2AE1B65EBA4C0C8C7E9BDB /* SprocketApp.swift */; };
 		D77F17B1BE4D97D0D7C1E624 /* SortGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C456795636BBBF5344E469 /* SortGameView.swift */; };
 		E63194403A2B715FB7EE36DB /* Curriculum+Builders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40822F3071BA3141A8F9A3C6 /* Curriculum+Builders.swift */; };
 		E7504163AAD049AF0DD24248 /* QuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774E44CE7A7EC8886DC8534A /* QuizView.swift */; };
-		EEDE6F5407391F3FE291D01E /* ByteButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4BF4E9145A05B0247F45E5A /* ByteButtonStyle.swift */; };
 		F0C7EC9AB4758B2D10D01A18 /* ReflectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39537EBA001771126875BF6A /* ReflectView.swift */; };
 		F3472EBD60D1A59185B5D70E /* RewardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4518EC2FE743F47C617C585A /* RewardView.swift */; };
 		FD6321B2071C637141646BAA /* ParentDashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62228ADA18A7BF238E77020C /* ParentDashboardView.swift */; };
@@ -43,6 +43,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		03047D92F08A31454A83C37A /* SprocketButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprocketButtonStyle.swift; sourceTree = "<group>"; };
 		0911AA41A18AD3C6E17EF947 /* BigIdea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigIdea.swift; sourceTree = "<group>"; };
 		0A0257358E35C6A39C42D578 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		0F4E48499740DA716EA57C50 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -76,7 +77,6 @@
 		C391D47FB730E88E033FF9E7 /* LearnerProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnerProfile.swift; sourceTree = "<group>"; };
 		C5E5DDD5826FFE1F212250DD /* DecisionTreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecisionTreeView.swift; sourceTree = "<group>"; };
 		C5F91AB776EDBDCAFA2346F9 /* UnitNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitNodeView.swift; sourceTree = "<group>"; };
-		E4BF4E9145A05B0247F45E5A /* ByteButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteButtonStyle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -195,7 +195,7 @@
 		C29FF8968B06BE7FC58D43E0 /* DesignSystem */ = {
 			isa = PBXGroup;
 			children = (
-				E4BF4E9145A05B0247F45E5A /* ByteButtonStyle.swift */,
+				03047D92F08A31454A83C37A /* SprocketButtonStyle.swift */,
 				0A0257358E35C6A39C42D578 /* Theme.swift */,
 			);
 			path = DesignSystem;
@@ -305,7 +305,6 @@
 			files = (
 				3EA4006D86EA4E9B01A10CAC /* Badge.swift in Sources */,
 				FE8BC0C9570FC22EAB3745EB /* BigIdea.swift in Sources */,
-				EEDE6F5407391F3FE291D01E /* ByteButtonStyle.swift in Sources */,
 				E63194403A2B715FB7EE36DB /* Curriculum+Builders.swift in Sources */,
 				B0AB42AD5FA0CD271896AAA2 /* Curriculum+Explorers.swift in Sources */,
 				8779326686FA79205274C760 /* Curriculum+Sprouts.swift in Sources */,
@@ -329,6 +328,7 @@
 				6C139DC4DA627A441C4C191F /* SpeakerButton.swift in Sources */,
 				54F44FA3E4D5D8A3EE1A99CD /* SpeechService.swift in Sources */,
 				D507DBEA779A1D11D51DA6CA /* SprocketApp.swift in Sources */,
+				C3FA98CD7E8E930FC483CDBB /* SprocketButtonStyle.swift in Sources */,
 				9A7CED87731D4AC03E65A55A /* TeachCardView.swift in Sources */,
 				7ADE663ECD544EA379718E12 /* Theme.swift in Sources */,
 				D3CEA235443C59612FDA300B /* Tier.swift in Sources */,
