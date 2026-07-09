@@ -1,0 +1,84 @@
+# Sprocket — AI for Kids
+
+An iOS app that teaches kids **what AI is, how it works, what prompts are, and
+how to use it responsibly** — in simple, fun, tiered lessons. Working title
+("Sprocket" is the mascot and a nod to bite-sized learning); rename freely.
+
+Built per the validated product brief. Deliberately mirrors the sibling
+**Fernby** app's conventions so the two stay mentally interchangeable: iOS 17,
+iPhone-only, SwiftUI, rounded system type, a single `UserDefaults`+`Codable`
+store, a "never punish a wrong answer" ethic, and forced light mode.
+
+## What's built (v0.1)
+
+- **Three tiered tracks** on one spine — the [AI4K12](https://ai4k12.org) *Five
+  Big Ideas* — taught at rising depth (a spiral, not three separate apps):
+  - **Sprouts** (5–8) — play-first, pre-reader friendly, auto-narrated
+  - **Explorers** (9–12) — concept + "train it, break it, fix it" projects
+  - **Builders** (13–17) — how it works, prompt craft, bias, deepfakes, ethics
+- **Core loop:** onboarding → parent-gated track pick → skill map → lesson
+  player (teach → do → reflect) → reward (XP, streak, badges) → next unlocks.
+- **Three reusable mini-games:** two-bin **Sort** ("Robot or Not?", "Cat or
+  Dog?"), **Decision-Tree** walk, and **Prompt Improver**.
+- **Parent dashboard** (behind a grown-up math gate): progress, Five-Big-Ideas
+  breakdown, badges, read-aloud & haptics toggles, track switch, data controls.
+- **Private by design:** no accounts, no ads, no third-party tracking, fully
+  offline; on-device speech only. Privacy manifest declares zero data
+  collection — the safest posture for the App Store Kids Category and the one
+  that clears the most COPPA/GDPR-K obligations up front.
+
+## Layout
+
+```
+Sprocket/
+  project.yml                 xcodegen project definition
+  Sprocket/
+    App/                      entry point + debug launch hooks
+    DesignSystem/             Theme (palette + type), SprocketButtonStyle
+    Models/                   Tier, BigIdea, Curriculum, Badge, progress types
+    Content/                  Curriculum+Sprouts / +Explorers / +Builders (authored in Swift)
+    Services/                 ProgressStore, Haptics, SpeechService
+    Views/                    Onboarding, Home (map), Lesson, MiniGames, Parent, Shared
+    Assets.xcassets/          AccentColor + AppIcon
+    PrivacyInfo.xcprivacy     privacy manifest (no tracking / no collection)
+```
+
+## Build & run
+
+```sh
+cd Sprocket
+xcodegen generate          # regenerate Sprocket.xcodeproj after adding/removing files
+open Sprocket.xcodeproj         # then run the "Sprocket" scheme
+```
+
+Command line:
+
+```sh
+xcodebuild build -project Sprocket.xcodeproj -scheme Sprocket \
+  -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO
+```
+
+## Debug / QA launch hooks (DEBUG builds only)
+
+Set as `SIMCTL_CHILD_*` env vars when launching in the simulator:
+
+| Variable | Effect |
+|---|---|
+| `SPROCKET_DEBUG_TIER=explorers` | Seed a profile on that track → land on the home map |
+| `SPROCKET_DEBUG_DONE=2` | Mark the first N units complete (screenshot mid-progress) |
+| `SPROCKET_DEBUG_UNIT=sprouts.1` | Jump straight into a unit's lesson player |
+| `SPROCKET_DEBUG_SCREEN=2` | Start that lesson at screen index N (e.g. a mini-game) |
+| `SPROCKET_DEBUG_VIEW=parent` | Open the parent dashboard directly |
+
+## Adding content
+
+Lessons are plain Swift data in `Content/Curriculum+<Tier>.swift`. A `Unit` is
+an ordered list of `LessonScreen`s (`.teach`, `.quiz`, `.game`, `.reflect`).
+Add a unit, give it the next `order`, and it appears on the map automatically.
+
+## Deliberately deferred (see the compliance brief)
+
+No live LLM/chatbot with children in v1 — the scripted, offline design sidesteps
+the largest cost and compliance risk. A gated "Ask-a-Buddy" sandbox (Builders
+only, verifiable parental consent) is a considered fast-follow, not a v1
+feature. Not legal advice; have counsel review before shipping.
