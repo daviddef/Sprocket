@@ -1,8 +1,8 @@
 import SwiftUI
 
 /// Sprocket — a tiered course that teaches kids (ages 5–17) what AI is, how it
-/// works, what prompts are, and how to use it responsibly. Working title;
-/// "Sprocket" is both the mascot's name and a nod to bite-sized lessons.
+/// works, what prompts are, and how to use it responsibly. "Sprocket" is the
+/// mascot's name — a friendly little thinking machine (a sprocket is a gear).
 ///
 /// Architecture mirrors the sibling Fernby app deliberately: one shared
 /// `ProgressStore` (UserDefaults + Codable) as the single source of truth,
@@ -12,6 +12,7 @@ import SwiftUI
 @main
 struct SprocketApp: App {
     @StateObject private var store = ProgressStore.shared
+    @StateObject private var entitlements = EntitlementStore.shared
 
     init() {
         #if DEBUG
@@ -23,6 +24,7 @@ struct SprocketApp: App {
         WindowGroup {
             rootContent
                 .environmentObject(store)
+                .environmentObject(entitlements)
                 .tint(Theme.spark)
                 .preferredColorScheme(.light)
         }
@@ -41,6 +43,8 @@ struct SprocketApp: App {
                              startIndex: Int(env["SPROCKET_DEBUG_SCREEN"] ?? "") ?? 0)
         } else if env["SPROCKET_DEBUG_VIEW"] == "parent" {
             ParentDashboardView()
+        } else if env["SPROCKET_DEBUG_VIEW"] == "paywall" {
+            PaywallView()
         } else {
             RootView()
         }

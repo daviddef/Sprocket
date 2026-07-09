@@ -1,11 +1,11 @@
 import SwiftUI
 
 /// One node on the home map. A tappable circle whose look encodes its state
-/// (done / current / available / locked), with the unit's name on the
-/// alternating side and earned stars beneath when complete. Nodes are joined
-/// by a short connector so the track reads as a single climbing path.
+/// (done / current / available / locked / premium-locked), with the unit's
+/// name on the alternating side and earned stars beneath when complete. Nodes
+/// are joined by a short connector so the track reads as a single climbing path.
 struct UnitNodeView: View {
-    enum State { case done, current, available, locked }
+    enum State { case done, current, available, locked, premiumLocked }
     enum Side { case leading, trailing }
 
     let unit: Unit
@@ -55,12 +55,25 @@ struct UnitNodeView: View {
                         .frame(width: circleSize + 14, height: circleSize + 14)
                 }
             }
+            .overlay(alignment: .topTrailing) {
+                if state == .premiumLocked { crownBadge }
+            }
             .overlay(alignment: .bottom) {
                 if state == .done { starRow.offset(y: 14) }
             }
         }
         .buttonStyle(.plain)
         .accessibilityLabel(accessibilityText)
+    }
+
+    private var crownBadge: some View {
+        Image(systemName: "crown.fill")
+            .font(.system(size: 12, weight: .bold))
+            .foregroundStyle(.white)
+            .frame(width: 26, height: 26)
+            .background(Circle().fill(Theme.spark))
+            .overlay(Circle().strokeBorder(Theme.ground, lineWidth: 2))
+            .offset(x: 6, y: -4)
     }
 
     private var starRow: some View {
@@ -79,20 +92,30 @@ struct UnitNodeView: View {
 
     // MARK: Label
 
+    private var dimmed: Bool { state == .locked || state == .premiumLocked }
+
     private func labelSlot(visible: Bool, alignment: HorizontalAlignment) -> some View {
         VStack(alignment: alignment, spacing: 3) {
             if visible {
                 Text(unit.title)
                     .font(.sprocket(16, .bold))
-                    .foregroundStyle(state == .locked ? Theme.inkFaint : Theme.ink)
+                    .foregroundStyle(dimmed ? Theme.inkFaint : Theme.ink)
                     .multilineTextAlignment(alignment == .leading ? .leading : .trailing)
-                Text(state == .locked ? "Locked" : "\(unit.subtitle) · \(unit.minutes) min")
+                Text(subtitleText)
                     .font(.sprocket(12, .medium))
-                    .foregroundStyle(Theme.inkFaint)
+                    .foregroundStyle(state == .premiumLocked ? Theme.spark : Theme.inkFaint)
                     .multilineTextAlignment(alignment == .leading ? .leading : .trailing)
             }
         }
         .frame(maxWidth: .infinity, alignment: alignment == .leading ? .leading : .trailing)
+    }
+
+    private var subtitleText: String {
+        switch state {
+        case .locked:        return "Locked"
+        case .premiumLocked: return "Sprocket Plus"
+        default:             return "\(unit.subtitle) · \(unit.minutes) min"
+        }
     }
 
     // MARK: State → look
@@ -101,6 +124,7 @@ struct UnitNodeView: View {
         switch state {
         case .done, .current: return unit.tier.color
         case .available:      return Theme.ground2
+        case .premiumLocked:  return unit.tier.softColor
         case .locked:         return Theme.ground3
         }
     }
@@ -108,6 +132,7 @@ struct UnitNodeView: View {
         switch state {
         case .done, .current: return unit.tier.color
         case .available:      return unit.tier.color.opacity(0.5)
+        case .premiumLocked:  return unit.tier.color.opacity(0.6)
         case .locked:         return Theme.line
         }
     }
@@ -115,28 +140,25 @@ struct UnitNodeView: View {
         switch state {
         case .done, .current: return .white
         case .available:      return unit.tier.color
+        case .premiumLocked:  return unit.tier.color
         case .locked:         return Theme.inkFaint
         }
     }
     private var symbol: String {
         switch state {
-        case .done:   return "checkmark"
-        case .locked: return "lock.fill"
-        default:      return unit.symbol
+        case .done:                    return "checkmark"
+        case .locked, .premiumLocked:  return "lock.fill"
+        default:                       return unit.symbol
         }
     }
 
     private var accessibilityText: String {
         switch state {
-        case .done:      return "\(unit.title), completed, \(stars) of 3 stars"
-        case .current:   return "\(unit.title), start this next"
-        case .available: return "\(unit.title), available"
-        case .locked:    return "\(unit.title), locked"
+        case .done:          return "\(unit.title), completed, \(stars) of 3 stars"
+        case .current:       return "\(unit.title), start this next"
+        case .available:     return "\(unit.title), available"
+        case .locked:        return "\(unit.title), locked"
+        case .premiumLocked: return "\(unit.title), unlock with Sprocket Plus"
         }
     }
-}
-
-extension Unit {
-    /// Convenience for views that only have a unit in hand.
-    var tierColor: Color { tier.color }
 }

@@ -6,11 +6,13 @@ import SwiftUI
 /// posture plainly — which is a feature, not fine print.
 struct ParentDashboardView: View {
     @EnvironmentObject private var store: ProgressStore
+    @EnvironmentObject private var entitlements: EntitlementStore
     @Environment(\.dismiss) private var dismiss
 
     @State private var haptics = Haptics.shared.enabled
     @State private var confirmReset = false
     @State private var confirmDelete = false
+    @State private var showPaywall = false
 
     private var track: [Unit] { store.track }
 
@@ -19,6 +21,7 @@ struct ParentDashboardView: View {
             ScrollView {
                 VStack(spacing: 16) {
                     childCard
+                    plusCard
                     progressCard
                     bigIdeasCard
                     if !store.badges.isEmpty { badgesCard }
@@ -35,6 +38,35 @@ struct ParentDashboardView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Done") { dismiss() }.font(.sprocket(16, .bold))
+                }
+            }
+            .sheet(isPresented: $showPaywall) { PaywallView() }
+        }
+    }
+
+    private var plusCard: some View {
+        card(tint: entitlements.isSubscribed ? Theme.correctBG : Theme.sproutsBG) {
+            HStack(spacing: 14) {
+                Image(systemName: entitlements.isSubscribed ? "checkmark.seal.fill" : "crown.fill")
+                    .font(.system(size: 22, weight: .bold))
+                    .foregroundStyle(entitlements.isSubscribed ? Theme.correct : Theme.spark)
+                    .frame(width: 46, height: 46)
+                    .background(Circle().fill(Theme.ground2))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(entitlements.isSubscribed ? "Sprocket Plus · Active" : "Sprocket Plus")
+                        .font(.sprocket(16, .bold))
+                    Text(entitlements.isSubscribed
+                         ? "Every lesson unlocked. Manage in device Settings."
+                         : "Unlock every lesson & track for the whole family.")
+                        .font(.sprocket(12)).foregroundStyle(Theme.inkSoft)
+                }
+                Spacer(minLength: 8)
+                if !entitlements.isSubscribed {
+                    Button("See Plans") { Haptics.shared.tap(); showPaywall = true }
+                        .font(.sprocket(13, .bold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 14).padding(.vertical, 9)
+                        .background(Capsule().fill(Theme.spark))
                 }
             }
         }

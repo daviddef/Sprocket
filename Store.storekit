@@ -1,0 +1,74 @@
+{
+  "identifier" : "SPROCKET1",
+  "nonRenewingSubscriptions" : [],
+  "products" : [],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : []
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "21001",
+      "localizations" : [],
+      "name" : "Sprocket Plus",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "6.99",
+          "familyShareable" : true,
+          "groupNumber" : 1,
+          "internalID" : "22001",
+          "introductoryOffer" : {
+            "internalID" : "23001",
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "All lessons and mini-games, all three tracks, for the whole family.",
+              "displayName" : "Sprocket Plus (Monthly)",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.daviddefranceski.sprocket.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Sprocket Plus Monthly",
+          "subscriptionGroupID" : "21001",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [],
+          "codeOffers" : [],
+          "displayPrice" : "49.99",
+          "familyShareable" : true,
+          "groupNumber" : 1,
+          "internalID" : "22002",
+          "introductoryOffer" : {
+            "internalID" : "23002",
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "All lessons and mini-games, all three tracks, for the whole family. Best value.",
+              "displayName" : "Sprocket Plus (Annual)",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.daviddefranceski.sprocket.annual",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Sprocket Plus Annual",
+          "subscriptionGroupID" : "21001",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}
