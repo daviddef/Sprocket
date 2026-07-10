@@ -12,8 +12,11 @@ import StoreKit
 final class EntitlementStore: ObservableObject {
     static let shared = EntitlementStore()
 
-    static let monthlyID = "com.daviddefranceski.sprocket.monthly"
-    static let annualID  = "com.daviddefranceski.sprocket.annual"
+    // `nonisolated` so plain value types (PlanVM) can read these without
+    // hopping to the main actor. Without it: a warning today, an error under
+    // the Swift 6 language mode.
+    nonisolated static let monthlyID = "com.daviddefranceski.sprocket.monthly"
+    nonisolated static let annualID  = "com.daviddefranceski.sprocket.annual"
     private let productIDs = [monthlyID, annualID]
 
     @Published private(set) var products: [Product] = []
