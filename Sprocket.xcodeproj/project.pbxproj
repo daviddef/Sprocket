@@ -9,9 +9,11 @@
 /* Begin PBXBuildFile section */
 		1A6D148CAD07439DF666C7A7 /* UnitProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633B073509F51AE8EA5B450D /* UnitProgress.swift */; };
 		1B4DA608849B0B9AF66D968F /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585F3484D7607B96E3DA7779 /* HomeView.swift */; };
+		2CDF6F0649E14FDC669D8242 /* TrainAndTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E2CBCF6BCED3A97859C4246 /* TrainAndTestView.swift */; };
 		3EA4006D86EA4E9B01A10CAC /* Badge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3402C90DA6DBBBCAACAAE4DB /* Badge.swift */; };
 		42C40069A52ACD8888F88B3F /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86F91C8FB9DC80B08FD33E /* OnboardingView.swift */; };
 		43AEC9356F42F6543E028A96 /* Curriculum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AFE702E53114CAC27200F2 /* Curriculum.swift */; };
+		44411332C8107B059326C92F /* NextWordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EEFB3F187D7EE6416AEF429 /* NextWordView.swift */; };
 		47090365FE9762721108F083 /* DecisionTreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5E5DDD5826FFE1F212250DD /* DecisionTreeView.swift */; };
 		54F44FA3E4D5D8A3EE1A99CD /* SpeechService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D797F7536A4A2C383FD31F /* SpeechService.swift */; };
 		558F947C5812FA7870F848CE /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321F7ED6DF80C1007FFDE66F /* Haptics.swift */; };
@@ -62,6 +64,7 @@
 		321F7ED6DF80C1007FFDE66F /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		3402C90DA6DBBBCAACAAE4DB /* Badge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badge.swift; sourceTree = "<group>"; };
 		39537EBA001771126875BF6A /* ReflectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReflectView.swift; sourceTree = "<group>"; };
+		3E2CBCF6BCED3A97859C4246 /* TrainAndTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainAndTestView.swift; sourceTree = "<group>"; };
 		3F6B1C239DDE861DBF54A201 /* LessonPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonPlayerView.swift; sourceTree = "<group>"; };
 		40822F3071BA3141A8F9A3C6 /* Curriculum+Builders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Curriculum+Builders.swift"; sourceTree = "<group>"; };
 		4518EC2FE743F47C617C585A /* RewardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardView.swift; sourceTree = "<group>"; };
@@ -78,6 +81,7 @@
 		80A5A090803C7D9A5B58789B /* PromptImproverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromptImproverView.swift; sourceTree = "<group>"; };
 		82C617251C04762F14FBD435 /* MascotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MascotView.swift; sourceTree = "<group>"; };
 		8ECCC124E2C858C704D8DC72 /* Tier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tier.swift; sourceTree = "<group>"; };
+		8EEFB3F187D7EE6416AEF429 /* NextWordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextWordView.swift; sourceTree = "<group>"; };
 		A3A29DED5D77EF5C048C03A8 /* Curriculum+Sprouts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Curriculum+Sprouts.swift"; sourceTree = "<group>"; };
 		A8535600D2A0020D394B4EEB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A8C456795636BBBF5344E469 /* SortGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortGameView.swift; sourceTree = "<group>"; };
@@ -178,8 +182,10 @@
 			isa = PBXGroup;
 			children = (
 				C5E5DDD5826FFE1F212250DD /* DecisionTreeView.swift */,
+				8EEFB3F187D7EE6416AEF429 /* NextWordView.swift */,
 				80A5A090803C7D9A5B58789B /* PromptImproverView.swift */,
 				A8C456795636BBBF5344E469 /* SortGameView.swift */,
+				3E2CBCF6BCED3A97859C4246 /* TrainAndTestView.swift */,
 			);
 			path = MiniGames;
 			sourceTree = "<group>";
@@ -346,6 +352,7 @@
 				9220B497C1F199D6A8C9E030 /* LearnerProfile.swift in Sources */,
 				FF5062F67826947C887727F7 /* LessonPlayerView.swift in Sources */,
 				5607BC9C681034975D8E9E59 /* MascotView.swift in Sources */,
+				44411332C8107B059326C92F /* NextWordView.swift in Sources */,
 				42C40069A52ACD8888F88B3F /* OnboardingView.swift in Sources */,
 				FD6321B2071C637141646BAA /* ParentDashboardView.swift in Sources */,
 				894DA6EAFA7DFBC6E9B3A9D7 /* ParentGateView.swift in Sources */,
@@ -366,6 +373,7 @@
 				9A7CED87731D4AC03E65A55A /* TeachCardView.swift in Sources */,
 				7ADE663ECD544EA379718E12 /* Theme.swift in Sources */,
 				D3CEA235443C59612FDA300B /* Tier.swift in Sources */,
+				2CDF6F0649E14FDC669D8242 /* TrainAndTestView.swift in Sources */,
 				F58435391EBBAF17CCE1764A /* TrophyRoomView.swift in Sources */,
 				A288EB93D24398A4AB8FBFC0 /* UnitNodeView.swift in Sources */,
 				1A6D148CAD07439DF666C7A7 /* UnitProgress.swift in Sources */,

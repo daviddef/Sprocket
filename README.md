@@ -18,8 +18,16 @@ store, a "never punish a wrong answer" ethic, and forced light mode.
   - **Builders** (13–17) — how it works, prompt craft, bias, deepfakes, ethics
 - **Core loop:** onboarding → parent-gated track pick → skill map → lesson
   player (teach → do → reflect) → reward (XP, streak, badges) → next unlocks.
-- **Three reusable mini-games:** two-bin **Sort** ("Robot or Not?", "Cat or
-  Dog?"), **Decision-Tree** walk, and **Prompt Improver**.
+- **Five reusable mini-games:**
+  - **Sort** — two-bin sorter ("Robot or Not?", "Cat or Dog?", good vs. bad data)
+  - **Decision-Tree** — walk a yes/no tree to an outcome (spam filter, verifying a claim)
+  - **Prompt Improver** — compare prompts and see the answer each would produce
+  - **Next Word** — predict what a language model would say next, then see its
+    real probability spread. Includes a round where the likeliest word is
+    *factually wrong*, which is how hallucination stops being an abstraction.
+  - **Train & Test** — choose the training data, then watch the model be tested
+    on examples it has never seen. The only game where the child's choices
+    *cause* the model's accuracy.
 - **Parent dashboard** (behind a grown-up math gate): progress, Five-Big-Ideas
   breakdown, badges, read-aloud & haptics toggles, track switch, data controls,
   and Sprocket Plus status.
@@ -86,6 +94,7 @@ Set as `SIMCTL_CHILD_*` env vars when launching in the simulator:
 | `SPROCKET_DEBUG_PLUS=1` | Force an active subscription (unlock all content) |
 | `SPROCKET_DEBUG_VIEW=picker` | Open the "Who's learning?" child picker directly |
 | `SPROCKET_DEBUG_KIDS="Sam:explorers:3,Mia:sprouts:6"` | Seed a family (`name:tier:unitsDone`); first child becomes active |
+| `SPROCKET_DEBUG_AUTOPICK=1` | Auto-answer Next-Word / auto-train Train-and-Test, to reach their reveal states |
 
 ## Subscription / StoreKit
 
@@ -103,6 +112,33 @@ Connect. The free/premium line lives in `Models/Gating.swift`
 Lessons are plain Swift data in `Content/Curriculum+<Tier>.swift`. A `Unit` is
 an ordered list of `LessonScreen`s (`.teach`, `.quiz`, `.game`, `.reflect`).
 Add a unit, give it the next `order`, and it appears on the map automatically.
+
+## Shipping checklist (App Store)
+
+Things that must be done outside this repo, in App Store Connect / Xcode:
+
+- [ ] **Create the two subscription products** in App Store Connect, in one
+      subscription group, both **family-shareable**, each with a 7-day free
+      trial introductory offer:
+      - `com.daviddefranceski.sprocket.monthly` — $6.99/month
+      - `com.daviddefranceski.sprocket.annual` — $49.99/year
+
+      ⚠️ These IDs still carry the **old** bundle prefix (the bundle is now
+      `com.defranceski.sprocket`). Product IDs are arbitrary strings and don't
+      have to match the bundle ID, so they work as-is — but an IAP product ID
+      is **permanent once created**, so decide before you create them. To
+      rename, change `EntitlementStore.monthlyID`/`annualID` and `Store.storekit`.
+- [ ] **Age rating**: 4+, and set the Kids Category age band (5 & under / 6–8 /
+      9–11) — this app targets 5–17, so consider whether the Kids Category is
+      the right home at all, given it caps at 11.
+- [ ] **Privacy nutrition label**: answer "Data Not Collected" — it's true, and
+      it's the strongest position to defend.
+- [ ] **Privacy policy URL** — required for the Kids Category. Must exist and
+      match `PrivacyInfo.xcprivacy` (no tracking, no collection).
+- [ ] **No third-party analytics/ad SDKs** — currently true; keep it that way.
+- [ ] Real-device test (everything so far is simulator-verified only).
+- [ ] Bump `CURRENT_PROJECT_VERSION` if App Store Connect rejects a duplicate
+      build number.
 
 ## Deliberately deferred (see the compliance brief)
 

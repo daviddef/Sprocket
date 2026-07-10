@@ -99,6 +99,10 @@ struct LessonPlayerView: View {
             DecisionTreeView(game: g, tint: unit.tier.color, onNext: advance)
         case .promptImprover(let g):
             PromptImproverView(game: g, tint: unit.tier.color, onNext: advance)
+        case .nextWord(let g):
+            NextWordView(game: g, tint: unit.tier.color, onNext: advance)
+        case .trainAndTest(let g):
+            TrainAndTestView(game: g, tint: unit.tier.color, onNext: advance)
         }
     }
 

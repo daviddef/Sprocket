@@ -67,13 +67,72 @@ enum MiniGame {
     case sort(SortGame)
     case decisionTree(DecisionTreeGame)
     case promptImprover(PromptImproverGame)
+    case nextWord(NextWordGame)
+    case trainAndTest(TrainAndTestGame)
 
     var title: String {
         switch self {
         case .sort(let g):    return g.title
         case .decisionTree:   return "Follow the Map"
         case .promptImprover: return "Better Asking"
+        case .nextWord:       return "Guess the Next Word"
+        case .trainAndTest:   return "Train & Test"
         }
+    }
+}
+
+/// Predict the next word, the way a language model does. The child picks what
+/// they think comes next, then sees the model's actual probability spread.
+///
+/// The point isn't to be right — it's to feel that the model chooses the
+/// *most likely* word, not the *true* one. Rounds where the likely answer is
+/// factually shaky are how hallucination stops being an abstraction.
+struct NextWordGame {
+    let intro: String
+    let rounds: [Round]
+
+    struct Round: Identifiable {
+        let id = UUID()
+        let context: String            // e.g. "The cat sat on the ___"
+        let options: [Option]
+        let insight: String            // shown after the reveal
+
+        var likeliest: Option? { options.max { $0.probability < $1.probability } }
+
+        struct Option: Identifiable {
+            let id = UUID()
+            let word: String
+            let probability: Double    // 0…1, should sum to ~1 across a round
+        }
+    }
+}
+
+/// Two phases: choose which examples to train on, then watch the model be
+/// tested on data it has never seen. Pick clean, varied examples and it does
+/// well; pick mislabelled or narrow ones and it visibly fails.
+///
+/// Distinct from `SortGame` on purpose — that one asks "which bin?", this one
+/// asks "what should the model learn from?", and then shows the consequence.
+/// It's the only game where the child's choices *cause* the model's accuracy.
+struct TrainAndTestGame {
+    let intro: String
+    let goal: String
+    let pool: [Example]
+    let pickCount: Int                 // how many examples the child must choose
+    let tests: [TestCase]
+
+    struct Example: Identifiable {
+        let id = UUID()
+        let label: String
+        let symbol: String
+        let isGood: Bool               // clean & representative training data
+        let why: String                // shown on reveal, good or bad
+    }
+
+    struct TestCase: Identifiable {
+        let id = UUID()
+        let label: String
+        let symbol: String
     }
 }
 
