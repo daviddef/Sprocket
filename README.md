@@ -18,6 +18,23 @@ store, a "never punish a wrong answer" ethic, and forced light mode.
   - **Builders** (13–17) — how it works, prompt craft, bias, deepfakes, ethics
 - **Core loop:** onboarding → parent-gated track pick → skill map → lesson
   player (teach → do → reflect) → reward (XP, streak, badges) → next unlocks.
+- **Spaced retrieval practice — the actual learning engine.** Every quiz a child
+  answers is queued and returns on a five-box Leitner schedule (1/2/4/7/15
+  days). Retrieval beats re-reading with medium effect sizes in real classrooms;
+  by contrast, badges and leaderboards show *no* significant effect on grades.
+  So XP/streaks/badges are light scaffolding only, and the mastery-bearing
+  badges require stars earned or answers recalled — never mere attendance.
+- **De-anthropomorphised copy.** AI *takes in data, finds patterns, gives an
+  answer back*. It never "understands", "listens", "thinks" or "feels", and the
+  mascot says outright that he isn't alive and that people write what he says.
+  Young children readily attribute sentience to AI; the mascot has to model the
+  correct language rather than undermine it.
+- **Knowing when NOT to use AI** — a judgment skill taught in every tier, from
+  "ask a grown-up when you feel unsafe" to "accountability can't be automated".
+- **Accessible:** full Dynamic Type support (clamped at AX2, beyond which the
+  phone-composed layouts break), Reduce Motion honoured app-wide, VoiceOver
+  labels on non-obvious controls, and — for pre-readers — every quiz and reflect
+  option individually narratable so nothing is gated behind reading.
 - **Five reusable mini-games:**
   - **Sort** — two-bin sorter ("Robot or Not?", "Cat or Dog?", good vs. bad data)
   - **Decision-Tree** — walk a yes/no tree to an outcome (spam filter, verifying a claim)
@@ -95,6 +112,31 @@ Set as `SIMCTL_CHILD_*` env vars when launching in the simulator:
 | `SPROCKET_DEBUG_VIEW=picker` | Open the "Who's learning?" child picker directly |
 | `SPROCKET_DEBUG_KIDS="Sam:explorers:3,Mia:sprouts:6"` | Seed a family (`name:tier:unitsDone`); first child becomes active |
 | `SPROCKET_DEBUG_AUTOPICK=1` | Auto-answer Next-Word / auto-train Train-and-Test, to reach their reveal states |
+| `SPROCKET_DEBUG_REVIEWS=1` | Pull the whole review queue forward to today (it's due tomorrow by design) |
+| `SPROCKET_DEBUG_VIEW=review` | Open a practice session directly |
+
+> `DebugSeed` only creates a profile when none exists, so re-launching over an
+> existing install silently reuses the *previous* tier and its narration
+> setting. Uninstall between tier-specific checks or you'll get false results.
+
+## Invariants worth keeping
+
+Cheap checks that have each caught a real bug:
+
+- **SF Symbol names** — an invalid name renders blank rather than failing the
+  build. Validate every `symbol:` string against `NSImage(systemSymbolName:)`.
+- **Narration must match its body.** For pre-readers narration *is* the content;
+  a stale narration string once said "we say good job!" while the screen showed
+  corrected text. Compare token overlap of every teach card's `body` and
+  `narration`.
+- **Persisted types decode leniently.** Swift's synthesized `Codable` decoder
+  calls `decode()` for every property *including ones with defaults* and throws
+  on a missing key. `ProgressStore` loads with `try?`, so adding a field to a
+  persisted struct would silently wipe a child's history. `ProfileProgress` and
+  `ReviewItem` hand-roll `init(from:)` with `decodeIfPresent`. Keep it that way.
+- **Review items are keyed by question prompt, not screen index.** Inserting a
+  screen shifts indices and would otherwise re-point a queued item at a
+  different question, carrying the wrong box history.
 
 ## Subscription / StoreKit
 
