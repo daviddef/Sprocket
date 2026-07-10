@@ -109,8 +109,10 @@ struct HomeView: View {
             .disabled(store.profiles.count <= 1)
             .accessibilityLabel(store.profiles.count > 1 ? "Switch child" : greeting)
             Spacer()
-            statChip(icon: "bolt.fill", value: "\(store.xp)", tint: Theme.spark)
-            statChip(icon: "flame.fill", value: "\(store.currentStreak)", tint: Theme.sprouts)
+            statChip(icon: "bolt.fill", value: "\(store.xp)", tint: Theme.spark,
+                     label: "\(store.xp) experience points")
+            statChip(icon: "flame.fill", value: "\(store.currentStreak)", tint: Theme.sprouts,
+                     label: "\(store.currentStreak) day streak")
             Button {
                 Haptics.shared.tap(); activeSheet = .trophies
             } label: {
@@ -134,7 +136,9 @@ struct HomeView: View {
         .overlay(alignment: .bottom) { Divider() }
     }
 
-    private func statChip(icon: String, value: String, tint: Color) -> some View {
+    /// `label` matters: without it VoiceOver announces a bare "0", since the
+    /// meaning lives entirely in an adjacent decorative icon.
+    private func statChip(icon: String, value: String, tint: Color, label: String) -> some View {
         HStack(spacing: 5) {
             Image(systemName: icon).font(.system(size: 13, weight: .bold))
             Text(value).sprocketFont(15, .bold).monospacedDigit()
@@ -143,6 +147,8 @@ struct HomeView: View {
         .padding(.horizontal, 10)
         .padding(.vertical, 6)
         .background(Capsule().fill(tint.opacity(0.14)))
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(label)
     }
 
     private var greeting: String {

@@ -32,6 +32,7 @@ struct SprocketApp: App {
                 // words mid-syllable beyond AX2. Clamping there keeps a large,
                 // genuinely readable size without shipping broken screens.
                 .dynamicTypeSize(...DynamicTypeSize.accessibility2)
+                .respectingReduceMotion()
         }
     }
 

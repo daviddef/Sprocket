@@ -77,4 +77,24 @@ extension View {
     func sprocketFont(_ size: CGFloat, _ weight: Font.Weight = .regular) -> some View {
         modifier(SprocketFont(size: size, weight: weight))
     }
+
+    /// Honour the system "Reduce Motion" setting for everything below this view.
+    ///
+    /// Applied once at the root rather than at each of the ~15 `.animation`
+    /// call sites, because a transaction mutation also catches the imperative
+    /// `withAnimation { … }` blocks in the mini-games, which per-call-site
+    /// edits would silently miss.
+    func respectingReduceMotion() -> some View {
+        modifier(ReduceMotionRoot())
+    }
+}
+
+private struct ReduceMotionRoot: ViewModifier {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    func body(content: Content) -> some View {
+        content.transaction { transaction in
+            if reduceMotion { transaction.animation = nil }
+        }
+    }
 }
