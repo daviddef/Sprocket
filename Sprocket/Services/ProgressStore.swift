@@ -128,10 +128,11 @@ final class ProgressStore: ObservableObject {
     private func enqueueReviews(for unit: Unit) {
         let tomorrow = Self.dayKey(Date().addingTimeInterval(86_400))
         for (index, screen) in unit.screens.enumerated() {
-            guard case .quiz = screen else { continue }
-            let id = ReviewItem.id(unitID: unit.id, screenIndex: index)
+            guard case .quiz(let question) = screen else { continue }
+            let id = ReviewItem.id(unitID: unit.id, prompt: question.prompt)
             guard reviewItems[id] == nil else { continue }
-            reviewItems[id] = ReviewItem(id: id, unitID: unit.id, screenIndex: index, dueDay: tomorrow)
+            reviewItems[id] = ReviewItem(unitID: unit.id, prompt: question.prompt,
+                                         screenIndex: index, dueDay: tomorrow)
         }
     }
 

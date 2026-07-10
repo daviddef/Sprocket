@@ -192,6 +192,26 @@ extension Curriculum {
                     title: "Give Credit",
                     body: "If AI helped you make something, it's honest to say so — at school and everywhere else.",
                     symbol: "hand.raised.fill")),
+                .teach(TeachCard(
+                    title: "Knowing When NOT to Use It",
+                    body: "AI can't solve everything, and reaching for it isn't always the right call. Some things need a person: judgment, care, or someone who can be held responsible.",
+                    symbol: "hand.raised.slash.fill")),
+                .game(.decisionTree(DecisionTreeGame(
+                    intro: "Being a good AI user means knowing when to put it down. Walk a real decision through.",
+                    goal: "Should you use AI for this?",
+                    root: .ask(
+                        question: "Could a wrong answer hurt someone?",
+                        yes: .ask(question: "Is a person checking it before it's acted on?",
+                                  yes: .result("⚠️ Use it as a helper — never the decider"),
+                                  no: .result("🚫 Don't let AI decide this alone")),
+                        no: .ask(question: "Are you meant to be learning this skill yourself?",
+                                 yes: .result("✍️ Use it to understand — not to do it for you"),
+                                 no: .result("✅ Go ahead — this is a good job for AI")))))),
+                .quiz(QuizQuestion(
+                    prompt: "Which task should a person decide, not AI on its own?",
+                    options: ["Suggesting a song to listen to", "Deciding who gets medicine first", "Naming a pet goldfish"],
+                    correctIndex: 1,
+                    explanation: "Right. When a wrong answer could seriously harm someone, a person has to be responsible for the decision.")),
                 .quiz(QuizQuestion(
                     prompt: "You see a shocking photo online that might be AI-made. First thing to do?",
                     options: ["Share it fast", "Check if it's real and where it came from", "Assume it's true"],

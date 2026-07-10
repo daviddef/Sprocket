@@ -218,6 +218,22 @@ extension Curriculum {
                     title: "AI & People",
                     body: "AI will change many jobs and how we live. It's a tool built by people, guided by choices — including yours.",
                     symbol: "person.3.fill")),
+                .teach(TeachCard(
+                    title: "Accountability Can't Be Automated",
+                    body: "Hiring, medical diagnosis, loans, policing, grading. AI can inform those decisions. It shouldn't make them alone — because when it's wrong, a person still has to answer for it.",
+                    symbol: "figure.stand.line.dotted.figure.stand")),
+                .teach(TeachCard(
+                    title: "Four Times to Put It Down",
+                    body: "When you're meant to learn the skill yourself. When the data is private. When a mistake is costly and nobody's checking. When you can't verify the output.",
+                    symbol: "hand.raised.slash.fill")),
+                .quiz(QuizQuestion(
+                    prompt: "Why do high-stakes decisions need a human in the loop?",
+                    options: [
+                        "Because accountability can't be automated — someone must answer for it",
+                        "Because AI is always wrong about important things",
+                        "Because humans process information faster"],
+                    correctIndex: 0,
+                    explanation: "Right. It isn't that AI is always wrong — it's that responsibility is a human thing. A model can't be held to account.")),
                 .reflect(ReflectPrompt(
                     prompt: "Write your own rule: I promise to always ___ when I use AI.",
                     options: ["Check important facts", "Give credit when it helps me", "Keep thinking for myself", "Stay kind and safe"])),

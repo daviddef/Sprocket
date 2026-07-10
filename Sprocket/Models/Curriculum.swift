@@ -215,16 +215,20 @@ enum Curriculum {
         track(for: tier).filter { $0.bigIdea == idea }
     }
 
-    /// Resolve a queued review item back to the question it points at.
-    /// Returns nil if content shifted underneath it (a unit removed, or its
-    /// screens reordered), so a stale queue entry can be dropped rather than
-    /// crashing.
+    /// Resolve a queued review item back to its question, **by prompt**.
+    ///
+    /// Matching on `screenIndex` would silently return a different question
+    /// once a unit gains or loses a screen. Returns nil when the question no
+    /// longer exists (content genuinely removed), so the entry is dropped
+    /// rather than mis-served.
     static func question(for item: ReviewItem) -> QuizQuestion? {
-        guard let unit = unit(id: item.unitID),
-              item.screenIndex >= 0, item.screenIndex < unit.screens.count,
-              case .quiz(let question) = unit.screens[item.screenIndex]
-        else { return nil }
-        return question
+        guard !item.prompt.isEmpty, let unit = unit(id: item.unitID) else { return nil }
+        for screen in unit.screens {
+            if case .quiz(let question) = screen, question.prompt == item.prompt {
+                return question
+            }
+        }
+        return nil
     }
 
     static func tier(for item: ReviewItem) -> Tier? {

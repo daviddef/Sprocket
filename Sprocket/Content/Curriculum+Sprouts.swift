@@ -3,8 +3,13 @@ import SwiftUI
 /// Sprouts track — ages 5–8. Play-first, pre-reader friendly: short
 /// sentences, one idea per card, every screen narratable. Ethics ("AI can be
 /// wrong, check with a grown-up", "be kind") is woven in from unit 1, not
-/// saved for a scary finale. Six units, one per Big Idea (with an intro unit
-/// folded under Perception).
+/// saved for a scary finale. Ten units, spiralling the Five Big Ideas twice.
+///
+/// Copy here is deliberately de-anthropomorphised: AI *takes in* data, *finds
+/// patterns* and *gives an answer back* — it never "understands", "listens",
+/// "thinks" or "feels", and Sprocket says outright that he isn't alive. This
+/// is the age at which the sentience misconception takes hold, so the mascot
+/// has to model the correct language rather than undermine it.
 extension Curriculum {
     static let sprouts: [Unit] = [
 
@@ -99,7 +104,7 @@ extension Curriculum {
         Unit(
             id: "sprouts.3", tier: .sprouts, bigIdea: .reasoning, order: 3,
             title: "The Yes/No Treasure Map",
-            subtitle: "Thinking in steps",
+            subtitle: "Working in steps",
             symbol: "arrow.triangle.branch",
             screens: [
                 .teach(TeachCard(
@@ -133,7 +138,7 @@ extension Curriculum {
         // 4 ──────────────────────────────────────────────────────────────
         Unit(
             id: "sprouts.4", tier: .sprouts, bigIdea: .learning, order: 4,
-            title: "Good Job, Robot!",
+            title: "How AI Improves",
             subtitle: "Learning from examples",
             symbol: "hand.thumbsup.fill",
             screens: [
@@ -162,7 +167,7 @@ extension Curriculum {
         // 5 ──────────────────────────────────────────────────────────────
         Unit(
             id: "sprouts.5", tier: .sprouts, bigIdea: .interaction, order: 5,
-            title: "Ask the Buddy",
+            title: "Asking AI Questions",
             subtitle: "Talking with AI",
             symbol: "bubble.left.and.bubble.right.fill",
             screens: [
@@ -210,12 +215,35 @@ extension Curriculum {
                     body: "Don't tell AI private things — like where you live or your full name. Ask a grown-up first.",
                     symbol: "lock.fill",
                     narration: "Don't tell A.I. private things, like where you live or your full name. Ask a grown-up first.")),
+                .teach(TeachCard(
+                    title: "AI Can't Do Everything",
+                    body: "AI is good at some things, like making up a silly story. But when you feel hurt, sad, or unsafe, ask a person you trust.",
+                    symbol: "hand.raised.fill",
+                    narration: "A.I. is good at some things, like making up a silly story. But when you feel hurt, sad, or unsafe, ask a person you trust.")),
+                .game(.sort(SortGame(
+                    title: "Who Should You Ask?",
+                    intro: "Some things are fine to ask AI. Some things you should ask a grown-up. Which is which?",
+                    binA: .init(label: "Ask a Grown-Up", symbol: "person.fill", color: Theme.spark),
+                    binB: .init(label: "AI Can Help", symbol: "cpu", color: Theme.explorers),
+                    items: [
+                        .init(label: "I feel sick", symbol: "cross.case.fill", inA: true),
+                        .init(label: "Make up a silly story", symbol: "book.fill", inA: false),
+                        .init(label: "Someone is being mean to me", symbol: "exclamationmark.bubble.fill", inA: true),
+                        .init(label: "What rhymes with cat?", symbol: "text.bubble.fill", inA: false),
+                        .init(label: "Where do I live?", symbol: "house.fill", inA: true),
+                    ]))),
                 .quiz(QuizQuestion(
                     prompt: "What should you NOT share with AI?",
                     options: ["Your favorite color", "Your home address", "A story you made up"],
                     correctIndex: 1,
                     explanation: "Right! Keep private things like your address safe. Ask a grown-up if you're unsure.",
                     narration: "What should you not share with A.I.?")),
+                .quiz(QuizQuestion(
+                    prompt: "When should you ask a real person instead of AI?",
+                    options: ["When you want a silly story", "When you feel hurt or unsafe", "Never"],
+                    correctIndex: 1,
+                    explanation: "Yes. When something really matters — how you feel, or being safe — a person who cares about you is the right one to ask.",
+                    narration: "When should you ask a real person instead of A.I.?")),
                 .reflect(ReflectPrompt(
                     prompt: "How do you feel about keeping your secrets safe?",
                     options: ["I've got this!", "I'll ask a grown-up", "I have questions"],
@@ -225,12 +253,12 @@ extension Curriculum {
         // 7 ──────────────────────────────────────────────────────────────
         Unit(
             id: "sprouts.7", tier: .sprouts, bigIdea: .perception, order: 7,
-            title: "AI Can Hear",
-            subtitle: "Listening computers",
+            title: "Sound Goes In",
+            subtitle: "Computers take in sound",
             symbol: "ear.fill",
             screens: [
                 .teach(TeachCard(
-                    title: "Sound Goes In",
+                    title: "A Microphone Takes It In",
                     body: "A microphone turns your voice into data — information a computer can use. Then the program matches patterns to find the words.",
                     symbol: "mic.fill",
                     narration: "A microphone turns your voice into data. That's information a computer can use. Then the program matches patterns to find the words.")),
@@ -267,7 +295,7 @@ extension Curriculum {
         Unit(
             id: "sprouts.8", tier: .sprouts, bigIdea: .reasoning, order: 8,
             title: "Guess My Fruit",
-            subtitle: "More thinking in steps",
+            subtitle: "More working in steps",
             symbol: "arrow.triangle.branch",
             screens: [
                 .teach(TeachCard(
