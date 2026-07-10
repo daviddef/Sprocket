@@ -212,9 +212,154 @@ extension Curriculum {
                     explanation: "Right! Keep private things like your address safe. Ask a grown-up if you're unsure.",
                     narration: "What should you not share with A.I.?")),
                 .reflect(ReflectPrompt(
-                    prompt: "You've met AI, taught it, and stayed safe. How was it?",
-                    options: ["So fun!", "I learned a lot", "I have more questions"],
-                    narration: "You've met A.I., taught it, and stayed safe. How was it?")),
+                    prompt: "How do you feel about keeping your secrets safe?",
+                    options: ["I've got this!", "I'll ask a grown-up", "I have questions"],
+                    narration: "How do you feel about keeping your secrets safe?")),
+            ]),
+
+        // 7 ──────────────────────────────────────────────────────────────
+        Unit(
+            id: "sprouts.7", tier: .sprouts, bigIdea: .perception, order: 7,
+            title: "AI Can Hear",
+            subtitle: "Listening computers",
+            symbol: "ear.fill",
+            screens: [
+                .teach(TeachCard(
+                    title: "Computers Can Listen",
+                    body: "With a microphone, AI can hear your voice and understand the words you say.",
+                    symbol: "mic.fill",
+                    narration: "With a microphone, A.I. can hear your voice and understand the words you say.")),
+                .teach(TeachCard(
+                    title: "It Learns Sounds Too",
+                    body: "Just like pictures, we teach AI sounds by playing it lots and lots of examples.",
+                    symbol: "waveform",
+                    narration: "Just like pictures, we teach A.I. sounds by playing it lots and lots of examples.")),
+                .game(.sort(SortGame(
+                    title: "Can AI Hear It?",
+                    intro: "AI listens with a microphone. Which of these make a sound?",
+                    binA: .init(label: "It's a Sound", symbol: "ear.fill", color: Theme.explorers),
+                    binB: .init(label: "Not a Sound", symbol: "eye.fill", color: Theme.inkSoft),
+                    items: [
+                        .init(label: "Your voice", symbol: "waveform", inA: true),
+                        .init(label: "A photo", symbol: "photo.fill", inA: false),
+                        .init(label: "A dog barking", symbol: "dog.fill", inA: true),
+                        .init(label: "A drawing", symbol: "paintbrush.fill", inA: false),
+                        .init(label: "A doorbell", symbol: "bell.fill", inA: true),
+                    ]))),
+                .quiz(QuizQuestion(
+                    prompt: "What does AI use to hear you?",
+                    options: ["A camera", "A microphone", "A magnet"],
+                    correctIndex: 1,
+                    explanation: "Yes! A microphone lets AI listen. A camera is for seeing.",
+                    narration: "What does A.I. use to hear you?")),
+                .reflect(ReflectPrompt(
+                    prompt: "Do you ever talk to an AI at home?",
+                    options: ["Yes, a speaker", "Yes, a phone", "Not yet"],
+                    narration: "Do you ever talk to an A.I. at home?")),
+            ]),
+
+        // 8 ──────────────────────────────────────────────────────────────
+        Unit(
+            id: "sprouts.8", tier: .sprouts, bigIdea: .reasoning, order: 8,
+            title: "Guess My Fruit",
+            subtitle: "More thinking in steps",
+            symbol: "arrow.triangle.branch",
+            screens: [
+                .teach(TeachCard(
+                    title: "Step by Step Again",
+                    body: "Computers guess by asking one small question at a time. Each answer gets them closer.",
+                    symbol: "questionmark.circle.fill",
+                    narration: "Computers guess by asking one small question at a time. Each answer gets them closer.")),
+                .game(.decisionTree(DecisionTreeGame(
+                    intro: "Think of a fruit. Answer yes or no, and watch the computer guess it!",
+                    goal: "Let's guess your fruit",
+                    root: .ask(
+                        question: "Is it red?",
+                        yes: .ask(question: "Is it small?",
+                                  yes: .result("Is it a strawberry? 🍓"),
+                                  no: .result("Is it an apple? 🍎")),
+                        no: .ask(question: "Is it yellow?",
+                                 yes: .result("Is it a banana? 🍌"),
+                                 no: .result("Is it a grape? 🍇")))))),
+                .quiz(QuizQuestion(
+                    prompt: "What does each yes-or-no answer do?",
+                    options: ["Helps narrow down the choices", "Makes the computer forget", "Starts it all over"],
+                    correctIndex: 0,
+                    explanation: "Right! Every answer removes some choices, until just one is left.",
+                    narration: "What does each yes or no answer do?")),
+                .reflect(ReflectPrompt(
+                    prompt: "Did the computer guess your fruit?",
+                    options: ["Yes!", "No, I tricked it"],
+                    narration: "Did the computer guess your fruit?")),
+            ]),
+
+        // 9 ──────────────────────────────────────────────────────────────
+        Unit(
+            id: "sprouts.9", tier: .sprouts, bigIdea: .learning, order: 9,
+            title: "Oops! AI Mistakes",
+            subtitle: "AI can be wrong",
+            symbol: "exclamationmark.triangle.fill",
+            screens: [
+                .teach(TeachCard(
+                    title: "AI Makes Mistakes",
+                    body: "Sometimes AI guesses wrong. It might even call a muffin a puppy! It isn't perfect.",
+                    symbol: "exclamationmark.triangle.fill",
+                    narration: "Sometimes A.I. guesses wrong. It might even call a muffin a puppy! It isn't perfect.")),
+                .teach(TeachCard(
+                    title: "We Help It Learn",
+                    body: "When AI is wrong, we show it the right answer. Then it does better next time.",
+                    symbol: "arrow.up.heart.fill",
+                    narration: "When A.I. is wrong, we show it the right answer. Then it does better next time.")),
+                .game(.sort(SortGame(
+                    title: "Good Guess or Oops?",
+                    intro: "The AI made some guesses. Which are right, and which are an oops?",
+                    binA: .init(label: "Good Guess", symbol: "hand.thumbsup.fill", color: Theme.correct),
+                    binB: .init(label: "Oops!", symbol: "hand.thumbsdown.fill", color: Theme.gentle),
+                    items: [
+                        .init(label: "\"That cat is a cat\"", symbol: "cat.fill", inA: true),
+                        .init(label: "\"That muffin is a puppy\"", symbol: "dog.fill", inA: false),
+                        .init(label: "\"The sky is blue\"", symbol: "cloud.fill", inA: true),
+                        .init(label: "\"The sun is cold\"", symbol: "sun.max.fill", inA: false),
+                    ]))),
+                .quiz(QuizQuestion(
+                    prompt: "AI tells you something strange. What do you do?",
+                    options: ["Believe it right away", "Check with a grown-up", "Get upset"],
+                    correctIndex: 1,
+                    explanation: "Yes! Always check surprising things with a grown-up you trust.",
+                    narration: "A.I. tells you something strange. What do you do?")),
+                .reflect(ReflectPrompt(
+                    prompt: "Is it okay to make mistakes?",
+                    options: ["Yes — that's how we learn!", "I'm not sure"],
+                    narration: "Is it okay to make mistakes?")),
+            ]),
+
+        // 10 ─────────────────────────────────────────────────────────────
+        Unit(
+            id: "sprouts.10", tier: .sprouts, bigIdea: .impact, order: 10,
+            title: "AI All Around Us",
+            subtitle: "People are the boss",
+            symbol: "sparkles",
+            screens: [
+                .teach(TeachCard(
+                    title: "AI Helps People",
+                    body: "AI helps doctors spot illness, helps farmers grow food, and can even help make music!",
+                    symbol: "heart.text.square.fill",
+                    narration: "A.I. helps doctors spot illness, helps farmers grow food, and can even help make music!")),
+                .teach(TeachCard(
+                    title: "You're the Boss",
+                    body: "AI is a tool, like a pencil or a bike. People choose how to use it. Choose to be kind.",
+                    symbol: "person.fill.checkmark",
+                    narration: "A.I. is a tool, like a pencil or a bike. People choose how to use it. Choose to be kind.")),
+                .quiz(QuizQuestion(
+                    prompt: "Who decides how AI is used?",
+                    options: ["People", "The AI itself", "Nobody"],
+                    correctIndex: 0,
+                    explanation: "That's right! People build AI and people choose how to use it — including you.",
+                    narration: "Who decides how A.I. is used?")),
+                .reflect(ReflectPrompt(
+                    prompt: "You finished the whole track! What was your favorite part?",
+                    options: ["Teaching the puppy", "The treasure map", "Talking to AI", "All of it!"],
+                    narration: "You finished the whole track! What was your favorite part?")),
             ]),
     ]
 }

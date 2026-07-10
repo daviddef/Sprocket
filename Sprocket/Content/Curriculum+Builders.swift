@@ -138,7 +138,7 @@ extension Curriculum {
                 .teach(TeachCard(
                     title: "Synthetic Media Is Convincing",
                     body: "AI can clone voices and faces. Deepfakes have fooled millions — the tech is good enough that 'I saw it' is no longer proof.",
-                    symbol: "person.crop.rectangle.badge.xmark.fill")),
+                    symbol: "person.crop.circle.badge.exclamationmark.fill")),
                 .teach(TeachCard(
                     title: "Verify Before You Trust",
                     body: "Check the source, look for other outlets reporting it, and be extra skeptical of content that makes you very angry — that's often the point.",
@@ -175,6 +175,137 @@ extension Curriculum {
                 .reflect(ReflectPrompt(
                     prompt: "Write your own rule: I promise to always ___ when I use AI.",
                     options: ["Check important facts", "Give credit when it helps me", "Keep thinking for myself", "Stay kind and safe"])),
+            ]),
+
+        // 7 ──────────────────────────────────────────────────────────────
+        Unit(
+            id: "builders.7", tier: .builders, bigIdea: .learning, order: 7,
+            title: "Where Training Data Comes From",
+            subtitle: "Scraping, consent & credit",
+            symbol: "tray.full.fill",
+            screens: [
+                .teach(TeachCard(
+                    title: "The Internet as a Textbook",
+                    body: "Many large models are trained on enormous amounts of text, images, and code scraped from the public web — books, art, forum posts, photos.",
+                    symbol: "globe")),
+                .teach(TeachCard(
+                    title: "Consent & Credit",
+                    body: "Most creators were never asked, and aren't paid or credited. Whether that's fair use or exploitation is being fought over in courts right now.",
+                    symbol: "signature")),
+                .teach(TeachCard(
+                    title: "Your Data, Too",
+                    body: "Things you post publicly can end up as training data. It's worth deciding, deliberately, what you put into the world.",
+                    symbol: "shoeprints.fill")),
+                .quiz(QuizQuestion(
+                    prompt: "Why is web-scraped training data controversial?",
+                    options: [
+                        "Creators often didn't consent and aren't credited or paid",
+                        "The internet is too small to train on",
+                        "Scraped data is always factually wrong"],
+                    correctIndex: 0,
+                    explanation: "Right — it's a live legal and ethical question, not a settled one.")),
+                .reflect(ReflectPrompt(
+                    prompt: "Should creators be paid when their work trains a model?",
+                    options: ["Yes, always", "Only with consent", "It's genuinely complicated"])),
+            ]),
+
+        // 8 ──────────────────────────────────────────────────────────────
+        Unit(
+            id: "builders.8", tier: .builders, bigIdea: .interaction, order: 8,
+            title: "Guardrails & Jailbreaks",
+            subtitle: "Why models say no",
+            symbol: "shield.lefthalf.filled",
+            screens: [
+                .teach(TeachCard(
+                    title: "Models Have Limits — On Purpose",
+                    body: "Guardrails stop a model producing genuinely harmful output: weapons instructions, self-harm content, someone's private data.",
+                    symbol: "shield.lefthalf.filled")),
+                .teach(TeachCard(
+                    title: "\"Jailbreaking\" Isn't Clever",
+                    body: "Tricking a model past its guardrails usually breaks the terms you agreed to — and the harm it can produce is real, not hypothetical.",
+                    symbol: "lock.trianglebadge.exclamationmark.fill")),
+                .teach(TeachCard(
+                    title: "Guardrails Are Imperfect",
+                    body: "They can also be too cautious, refusing harmless things. Good systems get corrected over time — by people reporting both failures.",
+                    symbol: "slider.horizontal.3")),
+                .quiz(QuizQuestion(
+                    prompt: "Why do AI systems refuse certain requests?",
+                    options: [
+                        "Guardrails exist to reduce real-world harm",
+                        "To be deliberately annoying",
+                        "The model ran out of words"],
+                    correctIndex: 0,
+                    explanation: "Correct. They're a safety design choice — imperfect, but there for a reason.")),
+                .reflect(ReflectPrompt(
+                    prompt: "Where should the line sit on what an AI will do?",
+                    options: ["Err toward safety", "Depends on the context", "I'm still working it out"])),
+            ]),
+
+        // 9 ──────────────────────────────────────────────────────────────
+        Unit(
+            id: "builders.9", tier: .builders, bigIdea: .impact, order: 9,
+            title: "Verify Like a Journalist",
+            subtitle: "Source-checking as a habit",
+            symbol: "magnifyingglass",
+            screens: [
+                .teach(TeachCard(
+                    title: "The Reporter's Reflex",
+                    body: "Three questions, every time: Who said it? When? Can anyone independent confirm it? Content engineered to enrage you deserves the most scrutiny.",
+                    symbol: "magnifyingglass")),
+                .game(.decisionTree(DecisionTreeGame(
+                    intro: "Walk a claim through a real verification process and see where it lands.",
+                    goal: "Should you trust this claim?",
+                    root: .ask(
+                        question: "Can you find the original source?",
+                        yes: .ask(question: "Do independent outlets report it too?",
+                                  yes: .result("✅ Likely reliable — stay curious anyway"),
+                                  no: .result("❓ Single source — treat with caution")),
+                        no: .ask(question: "Is it designed to make you angry?",
+                                 yes: .result("🚩 Likely manipulation — don't share"),
+                                 no: .result("❓ Unverified — hold off on sharing")))))),
+                .quiz(QuizQuestion(
+                    prompt: "What's the strongest signal a claim is reliable?",
+                    options: [
+                        "Independent corroboration from multiple sources",
+                        "It has a lot of likes and shares",
+                        "It confirms what you already believe"],
+                    correctIndex: 0,
+                    explanation: "Yes. Popularity isn't evidence, and agreement with your priors is the weakest test of all.")),
+                .reflect(ReflectPrompt(
+                    prompt: "Which part of verifying is hardest for you?",
+                    options: ["Slowing down", "Finding the source", "Resisting outrage"])),
+            ]),
+
+        // 10 ─────────────────────────────────────────────────────────────
+        Unit(
+            id: "builders.10", tier: .builders, bigIdea: .impact, order: 10,
+            title: "AI and Your Future",
+            subtitle: "Agency, work & choice",
+            symbol: "figure.stand",
+            screens: [
+                .teach(TeachCard(
+                    title: "Tools Change Work, Not Worth",
+                    body: "AI will reshape a lot of jobs. The skills that hold their value are judgment, creativity, and knowing which questions are worth asking.",
+                    symbol: "briefcase.fill")),
+                .teach(TeachCard(
+                    title: "Be the Person in the Loop",
+                    body: "The most valuable role is rarely 'does the task' — it's 'decides whether the output is any good'. That's a skill you can practise now.",
+                    symbol: "person.fill.checkmark")),
+                .teach(TeachCard(
+                    title: "You Have Agency",
+                    body: "AI is built by people making choices about data, guardrails, and who it serves. You could be one of those people.",
+                    symbol: "person.3.fill")),
+                .quiz(QuizQuestion(
+                    prompt: "Which skill stays most valuable alongside capable AI?",
+                    options: [
+                        "Judgment — knowing what's good and what to ask",
+                        "Typing quickly",
+                        "Memorising facts"],
+                    correctIndex: 0,
+                    explanation: "Right. AI can generate; deciding what's worth generating — and whether it's any good — is the human job.")),
+                .reflect(ReflectPrompt(
+                    prompt: "You finished the Builders track. What will you do with this?",
+                    options: ["Use AI thoughtfully", "Help others understand it", "Build something", "All of it"])),
             ]),
     ]
 }

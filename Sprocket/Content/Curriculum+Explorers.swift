@@ -177,5 +177,179 @@ extension Curriculum {
                     prompt: "What kind of AI user do you want to be?",
                     options: ["Curious", "Careful", "Honest", "All three"])),
             ]),
+
+        // 6 ──────────────────────────────────────────────────────────────
+        Unit(
+            id: "explorers.6", tier: .explorers, bigIdea: .perception, order: 6,
+            title: "AI in Your Day",
+            subtitle: "Spotting it in the wild",
+            symbol: "clock.fill",
+            screens: [
+                .teach(TeachCard(
+                    title: "From Wake-Up to Bedtime",
+                    body: "AI picks your video recommendations, filters spam, fixes your typos, and suggests the next song. Most of it is invisible.",
+                    symbol: "clock.fill")),
+                .teach(TeachCard(
+                    title: "The Tell: Does It Learn?",
+                    body: "A calculator always does the same thing. An AI gets better as it sees more data. That's the difference.",
+                    symbol: "chart.line.uptrend.xyaxis")),
+                .game(.sort(SortGame(
+                    title: "Learns, or Just Follows Rules?",
+                    intro: "Sort each tool: does it learn from data, or just follow steps a human wrote?",
+                    binA: .init(label: "Learns From Data", symbol: "brain.head.profile", color: Theme.explorers),
+                    binB: .init(label: "Fixed Steps", symbol: "list.bullet.rectangle", color: Theme.inkSoft),
+                    items: [
+                        .init(label: "Autocorrect suggestions", symbol: "keyboard", inA: true),
+                        .init(label: "A stopwatch", symbol: "stopwatch.fill", inA: false),
+                        .init(label: "Music recommendations", symbol: "music.note", inA: true),
+                        .init(label: "A calendar reminder", symbol: "calendar", inA: false),
+                        .init(label: "Spam filter", symbol: "envelope.fill", inA: true),
+                        .init(label: "A volume slider", symbol: "speaker.wave.2.fill", inA: false),
+                    ]))),
+                .quiz(QuizQuestion(
+                    prompt: "What's the clearest sign that something uses AI?",
+                    options: ["It improves as it sees more data", "It has a screen", "It needs electricity"],
+                    correctIndex: 0,
+                    explanation: "Exactly. Learning from data is the defining trait — not screens or power.")),
+                .reflect(ReflectPrompt(
+                    prompt: "Which everyday AI surprised you most?",
+                    options: ["Autocorrect", "Recommendations", "Spam filters", "All of them"])),
+            ]),
+
+        // 7 ──────────────────────────────────────────────────────────────
+        Unit(
+            id: "explorers.7", tier: .explorers, bigIdea: .reasoning, order: 7,
+            title: "How Chatbots Guess",
+            subtitle: "Predicting the next word",
+            symbol: "text.word.spacing",
+            screens: [
+                .teach(TeachCard(
+                    title: "It Predicts What Comes Next",
+                    body: "A chatbot writes by guessing the most likely next word — then the next, then the next. That's really all it does.",
+                    symbol: "text.word.spacing")),
+                .teach(TeachCard(
+                    title: "\"Sounds Right\" Isn't \"Is Right\"",
+                    body: "It predicts what sounds correct, not what's actually true. That's why it can be confidently wrong.",
+                    symbol: "exclamationmark.bubble.fill")),
+                .quiz(QuizQuestion(
+                    prompt: "A chatbot states a 'fact' that turns out to be false. Why?",
+                    options: [
+                        "It predicts likely-sounding words, not verified facts",
+                        "Somebody typed the wrong answer in",
+                        "It is broken and needs restarting"],
+                    correctIndex: 0,
+                    explanation: "Right. It's a prediction machine, not a truth machine. Always verify.")),
+                .reflect(ReflectPrompt(
+                    prompt: "What will you do before trusting a chatbot's fact?",
+                    options: ["Check another source", "Ask an adult", "Both"])),
+            ]),
+
+        // 8 ──────────────────────────────────────────────────────────────
+        Unit(
+            id: "explorers.8", tier: .explorers, bigIdea: .learning, order: 8,
+            title: "Learning by Playing",
+            subtitle: "Rewards teach machines",
+            symbol: "gamecontroller.fill",
+            screens: [
+                .teach(TeachCard(
+                    title: "Trial, Error, Reward",
+                    body: "Some AI learns like you learn a game: try something, see the score, keep what worked. Good moves earn a reward.",
+                    symbol: "gamecontroller.fill")),
+                .teach(TeachCard(
+                    title: "Millions of Tries",
+                    body: "A game-playing AI can practice millions of matches in a day. You can't — but you learn far faster from just a few.",
+                    symbol: "infinity")),
+                .game(.sort(SortGame(
+                    title: "Reward the Robot",
+                    intro: "You're training a soccer robot. Which moves should earn a reward?",
+                    binA: .init(label: "Good Move", symbol: "hand.thumbsup.fill", color: Theme.correct),
+                    binB: .init(label: "Bad Move", symbol: "hand.thumbsdown.fill", color: Theme.gentle),
+                    items: [
+                        .init(label: "Scores a goal", symbol: "soccerball", inA: true),
+                        .init(label: "Kicks it out of bounds", symbol: "arrow.up.right", inA: false),
+                        .init(label: "Passes to a teammate", symbol: "person.2.fill", inA: true),
+                        .init(label: "Trips another player", symbol: "figure.fall", inA: false),
+                    ]))),
+                .quiz(QuizQuestion(
+                    prompt: "How does a game-playing AI get good?",
+                    options: [
+                        "It practices and is rewarded for good moves",
+                        "It reads the rulebook once",
+                        "It copies a human exactly"],
+                    correctIndex: 0,
+                    explanation: "Yes — reward and repetition. It's called reinforcement learning.")),
+                .reflect(ReflectPrompt(
+                    prompt: "Is practising millions of times an unfair advantage?",
+                    options: ["It's different, not unfair", "Yes, it's an advantage", "I'm not sure"])),
+            ]),
+
+        // 9 ──────────────────────────────────────────────────────────────
+        Unit(
+            id: "explorers.9", tier: .explorers, bigIdea: .impact, order: 9,
+            title: "Spot the Fake",
+            subtitle: "AI-made images",
+            symbol: "eye.trianglebadge.exclamationmark.fill",
+            screens: [
+                .teach(TeachCard(
+                    title: "AI Can Invent Pictures",
+                    body: "AI can generate photos of things that never happened, of people who don't exist. They can look very real.",
+                    symbol: "photo.stack.fill")),
+                .teach(TeachCard(
+                    title: "Clues to Look For",
+                    body: "Odd hands and fingers, garbled text on signs, backgrounds that melt together. But the best check is always: where did it come from?",
+                    symbol: "magnifyingglass")),
+                .game(.sort(SortGame(
+                    title: "Clue, or Not a Clue?",
+                    intro: "Which of these actually hint that an image might be AI-made?",
+                    binA: .init(label: "Might Be AI", symbol: "sparkles", color: Theme.spark),
+                    binB: .init(label: "Not a Clue", symbol: "minus.circle", color: Theme.inkSoft),
+                    items: [
+                        .init(label: "Six fingers on a hand", symbol: "hand.raised.fill", inA: true),
+                        .init(label: "The photo is in colour", symbol: "paintpalette.fill", inA: false),
+                        .init(label: "Gibberish text on a sign", symbol: "textformat", inA: true),
+                        .init(label: "A friend shared it", symbol: "person.2.fill", inA: false),
+                        .init(label: "The background melts together", symbol: "scribble", inA: true),
+                    ]))),
+                .quiz(QuizQuestion(
+                    prompt: "Best first move when a shocking image appears in your feed?",
+                    options: ["Check where it came from", "Share it before it disappears", "Assume everything is fake"],
+                    correctIndex: 0,
+                    explanation: "Yes. Source-checking beats both gullibility and blanket cynicism.")),
+                .reflect(ReflectPrompt(
+                    prompt: "Have you seen an image you now suspect was AI-made?",
+                    options: ["Yes, probably", "Not sure", "I'll look more carefully now"])),
+            ]),
+
+        // 10 ─────────────────────────────────────────────────────────────
+        Unit(
+            id: "explorers.10", tier: .explorers, bigIdea: .interaction, order: 10,
+            title: "Try, Tweak, Repeat",
+            subtitle: "Prompting is a conversation",
+            symbol: "arrow.triangle.2.circlepath",
+            screens: [
+                .teach(TeachCard(
+                    title: "The First Try Is Rarely the Best",
+                    body: "Good prompting is a loop: ask, read the answer, then refine. Experts don't write perfect prompts — they iterate.",
+                    symbol: "arrow.triangle.2.circlepath")),
+                .game(.promptImprover(PromptImproverGame(
+                    intro: "Same goal, three prompts. Which one gets you what you actually want?",
+                    task: "You want a short, funny poem about your cat Mochi for a birthday card.",
+                    options: [
+                        .init(text: "\"poem\"", isBest: false,
+                              result: "A long, serious poem about nothing in particular. Not about Mochi at all."),
+                        .init(text: "\"Write a funny 4-line poem about my cat Mochi for a birthday card. Keep it kid-friendly.\"", isBest: true,
+                              result: "A short, silly, 4-line poem about Mochi that fits perfectly on a card."),
+                        .init(text: "\"make it funnier\"", isBest: false,
+                              result: "The AI has no idea what \"it\" refers to — there's no context yet."),
+                    ]))),
+                .quiz(QuizQuestion(
+                    prompt: "The answer isn't what you wanted. What's the best next move?",
+                    options: ["Refine your prompt and try again", "Give up", "Repeat the same prompt louder"],
+                    correctIndex: 0,
+                    explanation: "Exactly. Add detail, give an example, say what was wrong — then ask again.")),
+                .reflect(ReflectPrompt(
+                    prompt: "You finished the Explorers track! What's next?",
+                    options: ["Try the Builders track", "Teach someone else", "Keep practising prompts"])),
+            ]),
     ]
 }
