@@ -1,0 +1,11 @@
+# Xcode / Swift
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+.DS_Store
+*.swiftpm
+.build/
+
+# Local build output for CLI verification
+.build-dd/
