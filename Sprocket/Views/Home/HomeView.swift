@@ -17,7 +17,7 @@ struct HomeView: View {
 
     private enum GateTarget { case parent, paywall }
     private enum ActiveSheet: Identifiable {
-        case gate(GateTarget), parent, unlock, paywall, trophies, picker
+        case gate(GateTarget), parent, unlock, paywall, trophies, picker, review
         var id: String {
             switch self {
             case .gate(let t): return "gate-\(t == .parent ? "p" : "pay")"
@@ -26,6 +26,7 @@ struct HomeView: View {
             case .paywall:  return "paywall"
             case .trophies: return "trophies"
             case .picker:   return "picker"
+            case .review:   return "review"
             }
         }
     }
@@ -37,6 +38,7 @@ struct HomeView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     Color.clear.frame(height: 120)   // room for the pinned header
+                    if store.dueReviewCount > 0 { practiceCard.padding(.bottom, 26) }
                     mapPath
                     if trackComplete { graduationBanner.padding(.top, 24) }
                     Color.clear.frame(height: 40)
@@ -67,6 +69,8 @@ struct HomeView: View {
                 TrophyRoomView()
             case .picker:
                 ProfilePickerView()
+            case .review:
+                ReviewSessionView()
             }
         }
         .onAppear { Haptics.shared.prepareAll() }
@@ -172,6 +176,44 @@ struct HomeView: View {
             }
         }
         .padding(.horizontal, 24)
+    }
+
+    /// Only appears when something is actually due. Retrieval practice is the
+    /// learning engine of the app, so it sits above the map, not buried.
+    private var practiceCard: some View {
+        Button {
+            Haptics.shared.tap(); activeSheet = .review
+        } label: {
+            HStack(spacing: 14) {
+                Image(systemName: "arrow.triangle.2.circlepath")
+                    .font(.system(size: 22, weight: .bold))
+                    .foregroundStyle(.white)
+                    .frame(width: 48, height: 48)
+                    .background(Circle().fill(Theme.spark))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Time to practise")
+                        .sprocketFont(17, .bold).foregroundStyle(Theme.ink)
+                    Text("\(store.dueReviewCount) question\(store.dueReviewCount == 1 ? "" : "s") to remember")
+                        .sprocketFont(13).foregroundStyle(Theme.inkSoft)
+                }
+                Spacer(minLength: 4)
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 15, weight: .bold)).foregroundStyle(Theme.inkFaint)
+            }
+            .padding(14)
+            .background {
+                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                    .fill(Theme.ground2)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 18, style: .continuous)
+                            .strokeBorder(Theme.spark.opacity(0.45), lineWidth: 2)
+                    }
+            }
+            .shadow(color: Theme.spark.opacity(0.14), radius: 8, y: 3)
+        }
+        .buttonStyle(.plain)
+        .padding(.horizontal, 24)
+        .accessibilityLabel("Practise \(store.dueReviewCount) questions")
     }
 
     private func handleTap(_ unit: Unit, _ state: UnitNodeView.State) {

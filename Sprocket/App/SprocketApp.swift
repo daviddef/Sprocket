@@ -55,6 +55,8 @@ struct SprocketApp: App {
             TrophyRoomView()
         } else if env["SPROCKET_DEBUG_VIEW"] == "picker" {
             ProfilePickerView()
+        } else if env["SPROCKET_DEBUG_VIEW"] == "review" {
+            ReviewSessionView()
         } else {
             RootView()
         }
@@ -91,6 +93,7 @@ enum DebugSeed {
                 }
             }
             if let firstID { store.switchTo(firstID) }
+            forceReviewsDueIfRequested(store)
             return
         }
 
@@ -102,6 +105,20 @@ enum DebugSeed {
             for unit in Curriculum.track(for: tier).prefix(done) {
                 store.completeUnit(unit, correct: 3, total: 3)
             }
+        }
+        forceReviewsDueIfRequested(store)
+    }
+
+    /// Completing a unit schedules its questions for *tomorrow*, so a fresh
+    /// seed has nothing to practise. SPROCKET_DEBUG_REVIEWS=1 pulls them all
+    /// forward to today so the practice flow is reachable in one launch.
+    @MainActor
+    static func forceReviewsDueIfRequested(_ store: ProgressStore) {
+        guard ProcessInfo.processInfo.environment["SPROCKET_DEBUG_REVIEWS"] == "1" else { return }
+        let today = ProgressStore.dayKey(Date())
+        for (id, var item) in store.reviewItems {
+            item.dueDay = today
+            store.reviewItems[id] = item
         }
     }
 }

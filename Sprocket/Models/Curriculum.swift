@@ -214,4 +214,20 @@ enum Curriculum {
     static func units(in tier: Tier, idea: BigIdea) -> [Unit] {
         track(for: tier).filter { $0.bigIdea == idea }
     }
+
+    /// Resolve a queued review item back to the question it points at.
+    /// Returns nil if content shifted underneath it (a unit removed, or its
+    /// screens reordered), so a stale queue entry can be dropped rather than
+    /// crashing.
+    static func question(for item: ReviewItem) -> QuizQuestion? {
+        guard let unit = unit(id: item.unitID),
+              item.screenIndex >= 0, item.screenIndex < unit.screens.count,
+              case .quiz(let question) = unit.screens[item.screenIndex]
+        else { return nil }
+        return question
+    }
+
+    static func tier(for item: ReviewItem) -> Tier? {
+        unit(id: item.unitID)?.tier
+    }
 }

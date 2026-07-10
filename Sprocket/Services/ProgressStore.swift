@@ -31,6 +31,10 @@ final class ProgressStore: ObservableObject {
 
     /// XP awarded per finished unit. Small numbers, frequent wins.
     static let xpPerUnit = 20
+    /// Retrieval practice is the learning engine, so it pays too — modestly.
+    static let xpPerReview = 5
+    /// A review session stays short enough to finish in one sitting.
+    static let maxReviewsPerSession = 8
     /// Enough for a large family without the picker becoming a scroll.
     static let maxChildren = 6
 
@@ -95,6 +99,53 @@ final class ProgressStore: ObservableObject {
     var playedDays: Set<String> { get { current.playedDays } set { current.playedDays = newValue } }
     var earnedBadges: Set<String> { get { current.earnedBadges } set { current.earnedBadges = newValue } }
     var narrationEnabled: Bool { get { current.narrationEnabled } set { current.narrationEnabled = newValue } }
+    var reviewItems: [String: ReviewItem] { get { current.reviewItems } set { current.reviewItems = newValue } }
+
+    // MARK: - Retrieval practice
+    //
+    // Finishing a lesson isn't learning it. Low-stakes retrieval beats
+    // re-reading with medium effect sizes in real classrooms, so every quiz a
+    // child answers is enqueued and comes back on a widening schedule.
+
+    /// Questions due today or overdue, oldest first, capped to a session.
+    var dueReviews: [ReviewItem] {
+        let today = Self.dayKey(Date())
+        return reviewItems.values
+            .filter { $0.isDue(on: today) }
+            .sorted { $0.dueDay < $1.dueDay }
+            .prefix(Self.maxReviewsPerSession)
+            .map { $0 }
+    }
+
+    var dueReviewCount: Int {
+        let today = Self.dayKey(Date())
+        return reviewItems.values.filter { $0.isDue(on: today) }.count
+    }
+
+    /// Called when a unit is completed: every quiz screen in it joins the queue,
+    /// first due tomorrow. Never re-enqueues one already being tracked, so a
+    /// replayed lesson doesn't reset a child's hard-won box position.
+    private func enqueueReviews(for unit: Unit) {
+        let tomorrow = Self.dayKey(Date().addingTimeInterval(86_400))
+        for (index, screen) in unit.screens.enumerated() {
+            guard case .quiz = screen else { continue }
+            let id = ReviewItem.id(unitID: unit.id, screenIndex: index)
+            guard reviewItems[id] == nil else { continue }
+            reviewItems[id] = ReviewItem(id: id, unitID: unit.id, screenIndex: index, dueDay: tomorrow)
+        }
+    }
+
+    func recordReview(_ item: ReviewItem, correct: Bool) {
+        var updated = item
+        updated.record(correct: correct, today: Date())
+        reviewItems[updated.id] = updated
+        if correct { xp += Self.xpPerReview }
+    }
+
+    /// A review session counts as showing up today, same as a lesson.
+    func recordReviewSessionFinished() {
+        recordPlayToday()
+    }
 
     // MARK: - Profiles
 
@@ -201,6 +252,7 @@ final class ProgressStore: ObservableObject {
         p.completedAt = Date()
         unitProgress[unit.id] = p
 
+        enqueueReviews(for: unit)
         recordPlayToday()
         return awardBadges(justFinished: unit)
     }
@@ -285,7 +337,9 @@ final class ProgressStore: ObservableObject {
         return try? JSONDecoder().decode(T.self, from: data)
     }
 
-    static func dayKey(_ date: Date) -> String {
+    /// `nonisolated` so value types like `ReviewItem` can compute their own due
+    /// dates without hopping to the main actor.
+    nonisolated static func dayKey(_ date: Date) -> String {
         let f = DateFormatter()
         f.dateFormat = "yyyy-MM-dd"
         f.locale = Locale(identifier: "en_US_POSIX")
