@@ -23,6 +23,11 @@ store, a "never punish a wrong answer" ethic, and forced light mode.
 - **Parent dashboard** (behind a grown-up math gate): progress, Five-Big-Ideas
   breakdown, badges, read-aloud & haptics toggles, track switch, data controls,
   and Sprocket Plus status.
+- **Family profiles** — up to 6 children per device, each with their own track,
+  progress, XP, streak, badges and narration preference. Kids switch themselves
+  via a "Who's learning?" picker (deliberately not gated — switching to your own
+  profile isn't sensitive); adding and removing children stays in the grown-up
+  area. One subscription covers every child, which is what the paywall promises.
 - **Sprocket Plus subscription** (StoreKit 2): the first unit of each track is
   free; the rest unlocks with a family plan (one price, every child, every
   track). Designed around Kids Category rules — a **child never sees a purchase
@@ -79,6 +84,8 @@ Set as `SIMCTL_CHILD_*` env vars when launching in the simulator:
 | `SPROCKET_DEBUG_VIEW=parent` | Open the parent dashboard directly |
 | `SPROCKET_DEBUG_VIEW=paywall` | Open the Sprocket Plus paywall directly |
 | `SPROCKET_DEBUG_PLUS=1` | Force an active subscription (unlock all content) |
+| `SPROCKET_DEBUG_VIEW=picker` | Open the "Who's learning?" child picker directly |
+| `SPROCKET_DEBUG_KIDS="Sam:explorers:3,Mia:sprouts:6"` | Seed a family (`name:tier:unitsDone`); first child becomes active |
 
 ## Subscription / StoreKit
 

@@ -2,14 +2,14 @@ import Foundation
 import SwiftUI
 
 /// Single source of truth for everything that survives between launches:
-/// the child profile(s), per-unit progress, and the gamification state (XP,
-/// streak, badges, days played). Same shape as Fernby's ProgressStore —
-/// UserDefaults + Codable, namespaced keys, auto-persist on `didSet` — so
-/// the two apps stay mentally interchangeable.
+/// the child profiles and, **per child**, their unit progress and gamification
+/// state (XP, streak, badges, days played). Same shape as Fernby's
+/// ProgressStore — UserDefaults + Codable, namespaced keys, auto-persist on
+/// `didSet` — so the two apps stay mentally interchangeable.
 ///
-/// v1 scopes progress to the single active profile (a flat store, not
-/// per-profile maps). That's a deliberate limitation matching Fernby v0.1;
-/// multi-child isolation is a fast-follow.
+/// Progress is keyed by profile id. The `xp` / `currentStreak` / `unitProgress`
+/// accessors read and write the *active* child's record, so call sites read
+/// exactly as they did when this was a single-profile store.
 @MainActor
 final class ProgressStore: ObservableObject {
     static let shared = ProgressStore()
@@ -17,20 +17,22 @@ final class ProgressStore: ObservableObject {
     private let defaults = UserDefaults.standard
 
     private enum Key {
-        static let profiles       = "sprocket.profiles"
-        static let activeProfile  = "sprocket.activeProfileID"
-        static let unitProgress   = "sprocket.unitProgress"
-        static let xp             = "sprocket.xp"
-        static let currentStreak  = "sprocket.currentStreak"
-        static let longestStreak  = "sprocket.longestStreak"
-        static let lastPlayedDay  = "sprocket.lastPlayedDay"
-        static let playedDays     = "sprocket.playedDays"
-        static let badges         = "sprocket.badges"
-        static let narration      = "sprocket.narrationEnabled"
+        static let profiles          = "sprocket.profiles"
+        static let activeProfile     = "sprocket.activeProfileID"
+        static let progressByProfile = "sprocket.progressByProfile"
+
+        // Legacy single-profile keys, migrated once then removed.
+        static let legacy: [String] = [
+            "sprocket.unitProgress", "sprocket.xp", "sprocket.currentStreak",
+            "sprocket.longestStreak", "sprocket.lastPlayedDay", "sprocket.playedDays",
+            "sprocket.badges", "sprocket.narrationEnabled",
+        ]
     }
 
-    // XP awarded per finished screen-type. Small numbers, frequent wins.
+    /// XP awarded per finished unit. Small numbers, frequent wins.
     static let xpPerUnit = 20
+    /// Enough for a large family without the picker becoming a scroll.
+    static let maxChildren = 6
 
     @Published var profiles: [LearnerProfile] {
         didSet { persist(profiles, forKey: Key.profiles) }
@@ -38,45 +40,63 @@ final class ProgressStore: ObservableObject {
     @Published var activeProfileID: UUID? {
         didSet { defaults.set(activeProfileID?.uuidString, forKey: Key.activeProfile) }
     }
-    @Published var unitProgress: [String: UnitProgress] {
-        didSet { persist(unitProgress, forKey: Key.unitProgress) }
-    }
-    @Published var xp: Int {
-        didSet { defaults.set(xp, forKey: Key.xp) }
-    }
-    @Published var currentStreak: Int {
-        didSet { defaults.set(currentStreak, forKey: Key.currentStreak) }
-    }
-    @Published var longestStreak: Int {
-        didSet { defaults.set(longestStreak, forKey: Key.longestStreak) }
-    }
-    @Published var lastPlayedDay: String? {
-        didSet { defaults.set(lastPlayedDay, forKey: Key.lastPlayedDay) }
-    }
-    @Published var playedDays: Set<String> {
-        didSet { persist(playedDays, forKey: Key.playedDays) }
-    }
-    @Published var earnedBadges: Set<String> {
-        didSet { persist(earnedBadges, forKey: Key.badges) }
-    }
-    @Published var narrationEnabled: Bool {
-        didSet { defaults.set(narrationEnabled, forKey: Key.narration) }
+    /// Keyed by `LearnerProfile.id.uuidString`.
+    @Published private var progressByProfile: [String: ProfileProgress] {
+        didSet { persist(progressByProfile, forKey: Key.progressByProfile) }
     }
 
     private init() {
-        profiles        = Self.load(forKey: Key.profiles, from: defaults) ?? []
-        activeProfileID = UUID(uuidString: defaults.string(forKey: Key.activeProfile) ?? "")
-        unitProgress    = Self.load(forKey: Key.unitProgress, from: defaults) ?? [:]
-        xp              = defaults.integer(forKey: Key.xp)
-        currentStreak   = defaults.integer(forKey: Key.currentStreak)
-        longestStreak   = defaults.integer(forKey: Key.longestStreak)
-        lastPlayedDay   = defaults.string(forKey: Key.lastPlayedDay)
-        playedDays      = Self.load(forKey: Key.playedDays, from: defaults) ?? []
-        earnedBadges    = Self.load(forKey: Key.badges, from: defaults) ?? []
-        narrationEnabled = defaults.object(forKey: Key.narration) as? Bool ?? false
+        profiles          = Self.load(forKey: Key.profiles, from: defaults) ?? []
+        activeProfileID   = UUID(uuidString: defaults.string(forKey: Key.activeProfile) ?? "")
+        progressByProfile = Self.load(forKey: Key.progressByProfile, from: defaults) ?? [:]
+        migrateLegacyIfNeeded()
     }
 
-    // MARK: - Profile
+    /// One-time lift of the old flat, single-profile record into the active
+    /// child's slot. Runs only when there's legacy data and no per-profile data
+    /// yet, then clears the old keys so it can never run twice.
+    private func migrateLegacyIfNeeded() {
+        guard progressByProfile.isEmpty,
+              let activeID = activeProfileID,
+              defaults.object(forKey: "sprocket.xp") != nil
+                || defaults.data(forKey: "sprocket.unitProgress") != nil
+        else { return }
+
+        var p = ProfileProgress()
+        p.unitProgress    = Self.load(forKey: "sprocket.unitProgress", from: defaults) ?? [:]
+        p.xp              = defaults.integer(forKey: "sprocket.xp")
+        p.currentStreak   = defaults.integer(forKey: "sprocket.currentStreak")
+        p.longestStreak   = defaults.integer(forKey: "sprocket.longestStreak")
+        p.lastPlayedDay   = defaults.string(forKey: "sprocket.lastPlayedDay")
+        p.playedDays      = Self.load(forKey: "sprocket.playedDays", from: defaults) ?? []
+        p.earnedBadges    = Self.load(forKey: "sprocket.badges", from: defaults) ?? []
+        p.narrationEnabled = defaults.object(forKey: "sprocket.narrationEnabled") as? Bool ?? false
+
+        progressByProfile[activeID.uuidString] = p
+        Key.legacy.forEach { defaults.removeObject(forKey: $0) }
+    }
+
+    // MARK: - Active child's record
+
+    /// Reads fall back to an empty record (only reachable pre-onboarding);
+    /// writes no-op when there's no active child.
+    private var current: ProfileProgress {
+        get { activeProfileID.flatMap { progressByProfile[$0.uuidString] } ?? ProfileProgress() }
+        set { if let id = activeProfileID { progressByProfile[id.uuidString] = newValue } }
+    }
+
+    var unitProgress: [String: UnitProgress] {
+        get { current.unitProgress } set { current.unitProgress = newValue }
+    }
+    var xp: Int { get { current.xp } set { current.xp = newValue } }
+    var currentStreak: Int { get { current.currentStreak } set { current.currentStreak = newValue } }
+    var longestStreak: Int { get { current.longestStreak } set { current.longestStreak = newValue } }
+    var lastPlayedDay: String? { get { current.lastPlayedDay } set { current.lastPlayedDay = newValue } }
+    var playedDays: Set<String> { get { current.playedDays } set { current.playedDays = newValue } }
+    var earnedBadges: Set<String> { get { current.earnedBadges } set { current.earnedBadges = newValue } }
+    var narrationEnabled: Bool { get { current.narrationEnabled } set { current.narrationEnabled = newValue } }
+
+    // MARK: - Profiles
 
     var activeProfile: LearnerProfile? {
         profiles.first { $0.id == activeProfileID }
@@ -88,11 +108,52 @@ final class ProgressStore: ObservableObject {
 
     var track: [Unit] { Curriculum.track(for: tier) }
 
-    func createProfile(name: String, tier: Tier) {
+    var canAddChild: Bool { profiles.count < Self.maxChildren }
+
+    @discardableResult
+    func createProfile(name: String, tier: Tier) -> LearnerProfile {
         let profile = LearnerProfile(name: name.isEmpty ? tier.name : name, tier: tier)
         profiles.append(profile)
+        var fresh = ProfileProgress()
+        fresh.narrationEnabled = tier.narrationOnByDefault
+        progressByProfile[profile.id.uuidString] = fresh
         activeProfileID = profile.id
-        narrationEnabled = tier.narrationOnByDefault
+        return profile
+    }
+
+    func switchTo(_ id: UUID) {
+        guard profiles.contains(where: { $0.id == id }) else { return }
+        activeProfileID = id
+    }
+
+    /// Removes a child and everything they've done. If they were the active
+    /// child, hands the app to a sibling — or back to onboarding if none.
+    func removeProfile(_ id: UUID) {
+        profiles.removeAll { $0.id == id }
+        progressByProfile.removeValue(forKey: id.uuidString)
+        if activeProfileID == id { activeProfileID = profiles.first?.id }
+    }
+
+    /// Moves a child to a different age track and resets their narration
+    /// default to suit it.
+    func setTier(_ tier: Tier, for id: UUID) {
+        guard let idx = profiles.firstIndex(where: { $0.id == id }) else { return }
+        profiles[idx].tier = tier
+        var p = progressByProfile[id.uuidString] ?? ProfileProgress()
+        p.narrationEnabled = tier.narrationOnByDefault
+        progressByProfile[id.uuidString] = p
+    }
+
+    /// Progress summary for any child, not just the active one — the parent
+    /// view lists every child at a glance.
+    func completedCount(for profile: LearnerProfile) -> Int {
+        let p = progressByProfile[profile.id.uuidString] ?? ProfileProgress()
+        return Curriculum.track(for: profile.tier)
+            .filter { p.unitProgress[$0.id]?.completed == true }.count
+    }
+
+    func xp(for profile: LearnerProfile) -> Int {
+        progressByProfile[profile.id.uuidString]?.xp ?? 0
     }
 
     // MARK: - Unit progress & unlocking
@@ -106,7 +167,7 @@ final class ProgressStore: ObservableObject {
     }
 
     /// A unit is open if it's the first in the track or the one before it is
-    /// done. Strictly linear in v1 — a clear single path up the map.
+    /// done. Strictly linear — a clear single path up the map.
     func isUnlocked(_ unit: Unit) -> Bool {
         if unit.order <= 1 { return true }
         let previous = track.first { $0.order == unit.order - 1 }
@@ -125,8 +186,8 @@ final class ProgressStore: ObservableObject {
 
     // MARK: - Completing a unit (the reward moment)
 
-    /// Called by the lesson player when a unit is finished. Records stars &
-    /// XP, advances the daily streak, and evaluates any newly-earned badges.
+    /// Called by the lesson player when a unit is finished. Records stars & XP,
+    /// advances the daily streak, and evaluates any newly-earned badges.
     /// Returns the badges earned *by this completion* so the player can
     /// celebrate them.
     @discardableResult
@@ -148,9 +209,9 @@ final class ProgressStore: ObservableObject {
         guard total > 0 else { return 3 }
         let ratio = Double(correct) / Double(total)
         switch ratio {
-        case 1.0:        return 3
-        case 0.6...:     return 2
-        default:         return 1   // finishing always earns at least one
+        case 1.0:    return 3
+        case 0.6...: return 2
+        default:     return 1   // finishing always earns at least one
         }
     }
 
@@ -197,23 +258,17 @@ final class ProgressStore: ObservableObject {
 
     // MARK: - Reset (parent-controlled)
 
-    /// Wipes learning progress and gamification state but keeps the profile.
-    /// Backs the parent view's "Reset progress" control and resets between
-    /// playtest children on a shared device.
+    /// Wipes the active child's learning progress but keeps the child.
     func resetActiveProfileData() {
-        unitProgress = [:]
-        xp = 0
-        currentStreak = 0
-        longestStreak = 0
-        lastPlayedDay = nil
-        playedDays = []
-        earnedBadges = []
+        guard let id = activeProfileID else { return }
+        var fresh = ProfileProgress()
+        fresh.narrationEnabled = tier.narrationOnByDefault
+        progressByProfile[id.uuidString] = fresh
     }
 
-    /// Full teardown back to first-run onboarding. Used by the parent view's
-    /// stronger "Remove child & data" control.
+    /// Full teardown back to first-run onboarding: every child, every record.
     func deleteEverything() {
-        resetActiveProfileData()
+        progressByProfile = [:]
         profiles = []
         activeProfileID = nil
     }

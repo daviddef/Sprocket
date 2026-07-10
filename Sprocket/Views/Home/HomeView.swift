@@ -17,7 +17,7 @@ struct HomeView: View {
 
     private enum GateTarget { case parent, paywall }
     private enum ActiveSheet: Identifiable {
-        case gate(GateTarget), parent, unlock, paywall, trophies
+        case gate(GateTarget), parent, unlock, paywall, trophies, picker
         var id: String {
             switch self {
             case .gate(let t): return "gate-\(t == .parent ? "p" : "pay")"
@@ -25,6 +25,7 @@ struct HomeView: View {
             case .unlock:   return "unlock"
             case .paywall:  return "paywall"
             case .trophies: return "trophies"
+            case .picker:   return "picker"
             }
         }
     }
@@ -64,6 +65,8 @@ struct HomeView: View {
                 PaywallView()
             case .trophies:
                 TrophyRoomView()
+            case .picker:
+                ProfilePickerView()
             }
         }
         .onAppear { Haptics.shared.prepareAll() }
@@ -73,14 +76,36 @@ struct HomeView: View {
 
     private var header: some View {
         HStack(spacing: 14) {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(greeting)
-                    .font(.sprocket(22, .heavy))
-                    .foregroundStyle(Theme.ink)
-                Text(store.tier.name + " · " + store.tier.ageRange)
-                    .font(.sprocket(13, .semibold))
-                    .foregroundStyle(store.tier.color)
+            // With siblings on the device, the greeting doubles as the
+            // "who's learning?" switcher. With one child there's nothing to
+            // switch to, so it stays plain text.
+            Button {
+                guard store.profiles.count > 1 else { return }
+                Haptics.shared.tap(); activeSheet = .picker
+            } label: {
+                VStack(alignment: .leading, spacing: 2) {
+                    HStack(spacing: 5) {
+                        Text(greeting)
+                            .font(.sprocket(22, .heavy))
+                            .foregroundStyle(Theme.ink)
+                        if store.profiles.count > 1 {
+                            Image(systemName: "chevron.down.circle.fill")
+                                .font(.system(size: 13, weight: .bold))
+                                .foregroundStyle(Theme.inkFaint)
+                        }
+                    }
+                    Text(store.tier.name + " · " + store.tier.ageRange)
+                        .font(.sprocket(13, .semibold))
+                        .foregroundStyle(store.tier.color)
+                }
+                // The header is tight: a long name plus the switcher chevron
+                // would otherwise wrap "Explorers · Ages 9–12" onto two lines.
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
             }
+            .buttonStyle(.plain)
+            .disabled(store.profiles.count <= 1)
+            .accessibilityLabel(store.profiles.count > 1 ? "Switch child" : greeting)
             Spacer()
             statChip(icon: "bolt.fill", value: "\(store.xp)", tint: Theme.spark)
             statChip(icon: "flame.fill", value: "\(store.currentStreak)", tint: Theme.sprouts)

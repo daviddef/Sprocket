@@ -47,6 +47,8 @@ struct SprocketApp: App {
             PaywallView()
         } else if env["SPROCKET_DEBUG_VIEW"] == "trophies" {
             TrophyRoomView()
+        } else if env["SPROCKET_DEBUG_VIEW"] == "picker" {
+            ProfilePickerView()
         } else {
             RootView()
         }
@@ -57,16 +59,36 @@ struct SprocketApp: App {
 }
 
 #if DEBUG
-/// Launch-argument gated seeding so it can never fire in release. Set
-/// SPROCKET_DEBUG_TIER to a tier raw value ("sprouts"/"explorers"/"builders") to
-/// create a profile on that track, optionally SPROCKET_DEBUG_DONE to a count of
-/// leading units to mark complete (to screenshot mid-progress maps).
+/// Launch-argument gated seeding so it can never fire in release.
+///
+/// - `SPROCKET_DEBUG_TIER=explorers` + optional `SPROCKET_DEBUG_DONE=3`
+///   creates one child on that track with N units complete.
+/// - `SPROCKET_DEBUG_KIDS="Sam:explorers:3,Mia:sprouts:1"` seeds a whole
+///   family (name:tier:unitsDone), for exercising the multi-child switcher.
+///   The first child listed ends up active.
 enum DebugSeed {
     @MainActor
     static func applyIfRequested() {
         let env = ProcessInfo.processInfo.environment
-        guard let raw = env["SPROCKET_DEBUG_TIER"], let tier = Tier(rawValue: raw) else { return }
         let store = ProgressStore.shared
+
+        if let kids = env["SPROCKET_DEBUG_KIDS"], store.profiles.isEmpty {
+            var firstID: UUID?
+            for spec in kids.split(separator: ",") {
+                let parts = spec.split(separator: ":").map(String.init)
+                guard parts.count >= 2, let tier = Tier(rawValue: parts[1]) else { continue }
+                let profile = store.createProfile(name: parts[0], tier: tier)
+                if firstID == nil { firstID = profile.id }
+                let done = parts.count > 2 ? (Int(parts[2]) ?? 0) : 0
+                for unit in Curriculum.track(for: tier).prefix(done) {
+                    store.completeUnit(unit, correct: 3, total: 3)
+                }
+            }
+            if let firstID { store.switchTo(firstID) }
+            return
+        }
+
+        guard let raw = env["SPROCKET_DEBUG_TIER"], let tier = Tier(rawValue: raw) else { return }
         if store.activeProfile == nil {
             store.createProfile(name: "Sam", tier: tier)
         }

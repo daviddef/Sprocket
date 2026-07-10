@@ -13,6 +13,8 @@ struct ParentDashboardView: View {
     @State private var confirmReset = false
     @State private var confirmDelete = false
     @State private var showPaywall = false
+    @State private var showAddChild = false
+    @State private var childToRemove: LearnerProfile?
 
     private var track: [Unit] { store.track }
 
@@ -20,7 +22,7 @@ struct ParentDashboardView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 16) {
-                    childCard
+                    childrenCard
                     plusCard
                     progressCard
                     bigIdeasCard
@@ -41,6 +43,19 @@ struct ParentDashboardView: View {
                 }
             }
             .sheet(isPresented: $showPaywall) { PaywallView() }
+            .sheet(isPresented: $showAddChild) { AddChildView() }
+            .confirmationDialog(
+                childToRemove.map { "Remove \($0.name) and delete their progress?" } ?? "",
+                isPresented: Binding(get: { childToRemove != nil },
+                                     set: { if !$0 { childToRemove = nil } }),
+                titleVisibility: .visible
+            ) {
+                Button("Remove child", role: .destructive) {
+                    if let c = childToRemove { store.removeProfile(c.id) }
+                    childToRemove = nil
+                }
+                Button("Cancel", role: .cancel) { childToRemove = nil }
+            }
         }
     }
 
@@ -74,40 +89,99 @@ struct ParentDashboardView: View {
 
     // MARK: Cards
 
-    private var childCard: some View {
+    /// Every child on this device. One subscription covers all of them, so the
+    /// family list is the first thing a paying parent should see.
+    private var childrenCard: some View {
         card {
-            HStack(spacing: 14) {
-                Image(systemName: store.tier.symbol)
-                    .font(.system(size: 24, weight: .semibold))
-                    .foregroundStyle(store.tier.color)
-                    .frame(width: 52, height: 52)
-                    .background(Circle().fill(store.tier.softColor))
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(store.activeProfile?.name ?? "Learner").font(.sprocket(20, .bold))
-                    Text("\(store.tier.name) · \(store.tier.ageRange)")
-                        .font(.sprocket(13, .semibold)).foregroundStyle(store.tier.color)
+            VStack(alignment: .leading, spacing: 12) {
+                HStack {
+                    cardTitle(store.profiles.count > 1 ? "Children" : "Child")
+                    Spacer()
+                    Text("\(store.profiles.count)/\(ProgressStore.maxChildren)")
+                        .font(.sprocket(12, .semibold)).foregroundStyle(Theme.inkFaint)
+                        .monospacedDigit()
                 }
-                Spacer()
-                Menu {
-                    ForEach(Tier.allCases) { tier in
-                        Button {
-                            store.setActiveTier(tier); haptics = Haptics.shared.enabled
-                        } label: {
-                            Label("\(tier.name) (\(tier.ageRange))",
-                                  systemImage: tier == store.tier ? "checkmark" : tier.symbol)
-                        }
-                    }
+
+                ForEach(store.profiles) { child in
+                    childRow(child)
+                    if child.id != store.profiles.last?.id { Divider() }
+                }
+
+                Button {
+                    Haptics.shared.tap(); showAddChild = true
                 } label: {
-                    Text("Change track").font(.sprocket(13, .semibold))
+                    Label("Add a child", systemImage: "plus.circle.fill")
+                        .font(.sprocket(15, .bold))
+                        .foregroundStyle(store.canAddChild ? Theme.spark : Theme.inkFaint)
+                }
+                .disabled(!store.canAddChild)
+                .padding(.top, 2)
+
+                if !store.canAddChild {
+                    Text("Maximum of \(ProgressStore.maxChildren) children per device.")
+                        .font(.sprocket(11)).foregroundStyle(Theme.inkFaint)
                 }
             }
+        }
+    }
+
+    private func childRow(_ child: LearnerProfile) -> some View {
+        let active = child.id == store.activeProfileID
+        let total = Curriculum.track(for: child.tier).count
+        return HStack(spacing: 12) {
+            Text(String(child.name.first.map(String.init) ?? "?").uppercased())
+                .font(.sprocket(18, .heavy)).foregroundStyle(.white)
+                .frame(width: 44, height: 44)
+                .background(Circle().fill(child.tier.color))
+                .overlay(alignment: .bottomTrailing) {
+                    if active {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 14))
+                            .foregroundStyle(Theme.correct)
+                            .background(Circle().fill(.white))
+                            .offset(x: 2, y: 2)
+                    }
+                }
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(child.name).font(.sprocket(17, .bold))
+                Text("\(child.tier.name) · \(store.completedCount(for: child))/\(total) lessons · \(store.xp(for: child)) XP")
+                    .font(.sprocket(11)).foregroundStyle(Theme.inkFaint)
+            }
+            Spacer(minLength: 4)
+
+            Menu {
+                if !active {
+                    Button {
+                        store.switchTo(child.id); haptics = Haptics.shared.enabled
+                    } label: { Label("Make active", systemImage: "person.fill.checkmark") }
+                }
+                Menu("Change track") {
+                    ForEach(Tier.allCases) { tier in
+                        Button {
+                            store.setTier(tier, for: child.id)
+                        } label: {
+                            Label("\(tier.name) (\(tier.ageRange))",
+                                  systemImage: tier == child.tier ? "checkmark" : tier.symbol)
+                        }
+                    }
+                }
+                Divider()
+                Button(role: .destructive) { childToRemove = child } label: {
+                    Label("Remove child", systemImage: "trash")
+                }
+            } label: {
+                Image(systemName: "ellipsis.circle")
+                    .font(.system(size: 20)).foregroundStyle(Theme.inkSoft)
+            }
+            .accessibilityLabel("Manage \(child.name)")
         }
     }
 
     private var progressCard: some View {
         card {
             VStack(alignment: .leading, spacing: 14) {
-                cardTitle("Progress")
+                cardTitle("\(store.activeProfile?.name ?? "Learner")'s Progress")
                 HStack(spacing: 12) {
                     stat("\(store.completedCount)/\(track.count)", "Lessons", Theme.explorers)
                     stat("\(store.xp)", "XP", Theme.spark)
@@ -219,7 +293,7 @@ struct ParentDashboardView: View {
                 Button {
                     confirmDelete = true
                 } label: {
-                    Label("Remove child & all data", systemImage: "trash")
+                    Label("Remove all children & data", systemImage: "trash")
                         .font(.sprocket(15, .semibold)).foregroundStyle(Theme.spark)
                 }
             }
@@ -278,12 +352,81 @@ struct ParentDashboardView: View {
     }
 }
 
-extension ProgressStore {
-    /// Lets a parent move the child to a different age track (and resets the
-    /// narration default to match). Mutating the profile persists via didSet.
-    func setActiveTier(_ tier: Tier) {
-        guard let idx = profiles.firstIndex(where: { $0.id == activeProfileID }) else { return }
-        profiles[idx].tier = tier
-        narrationEnabled = tier.narrationOnByDefault
+/// Adding a child, from inside the grown-up area. Same two decisions as
+/// first-run onboarding — a name and an age track — minus the welcome.
+struct AddChildView: View {
+    @EnvironmentObject private var store: ProgressStore
+    @Environment(\.dismiss) private var dismiss
+
+    @State private var name = ""
+    @State private var tier: Tier = .explorers
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(spacing: 18) {
+                    TextField("Name or nickname", text: $name)
+                        .font(.sprocket(18, .semibold))
+                        .multilineTextAlignment(.center)
+                        .textInputAutocapitalization(.words)
+                        .padding(16)
+                        .background(RoundedRectangle(cornerRadius: 14).fill(Theme.ground2))
+                        .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(Theme.line))
+
+                    Text("Pick their track").font(.sprocket(15, .bold))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                    ForEach(Tier.allCases) { t in
+                        Button {
+                            Haptics.shared.tap(); tier = t
+                        } label: {
+                            HStack(spacing: 14) {
+                                Image(systemName: t.symbol)
+                                    .font(.system(size: 22, weight: .semibold))
+                                    .foregroundStyle(t.color)
+                                    .frame(width: 48, height: 48)
+                                    .background(Circle().fill(t.softColor))
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(t.name).font(.sprocket(17, .bold)).foregroundStyle(Theme.ink)
+                                    Text(t.ageRange).font(.sprocket(12, .semibold)).foregroundStyle(t.color)
+                                    Text(t.tagline).font(.sprocket(11)).foregroundStyle(Theme.inkSoft)
+                                }
+                                Spacer()
+                                Image(systemName: tier == t ? "checkmark.circle.fill" : "circle")
+                                    .font(.system(size: 22))
+                                    .foregroundStyle(tier == t ? t.color : Theme.line)
+                            }
+                            .padding(14)
+                            .background {
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                    .fill(Theme.ground2)
+                                    .overlay {
+                                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                            .strokeBorder(tier == t ? t.color : Theme.line,
+                                                          lineWidth: tier == t ? 2.5 : 1)
+                                    }
+                            }
+                        }
+                        .buttonStyle(.plain)
+                    }
+
+                    Button("Add Child") {
+                        store.createProfile(name: name.trimmingCharacters(in: .whitespaces), tier: tier)
+                        dismiss()
+                    }
+                    .buttonStyle(.sprocket(tier.color))
+                    .padding(.top, 4)
+                }
+                .padding(20)
+            }
+            .background(Theme.ground.ignoresSafeArea())
+            .navigationTitle("Add a Child")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
+            }
+        }
     }
 }

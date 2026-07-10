@@ -24,7 +24,9 @@
 		8779326686FA79205274C760 /* Curriculum+Sprouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A29DED5D77EF5C048C03A8 /* Curriculum+Sprouts.swift */; };
 		894DA6EAFA7DFBC6E9B3A9D7 /* ParentGateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B6F504F38A72AC666DAD103 /* ParentGateView.swift */; };
 		9220B497C1F199D6A8C9E030 /* LearnerProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C391D47FB730E88E033FF9E7 /* LearnerProfile.swift */; };
+		93733DFDD68B51EF6B3CE6E8 /* ProfilePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C490C74B435D26290B5849 /* ProfilePickerView.swift */; };
 		970E8F2A781E6CC81BA5B0AC /* PromptImproverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A5A090803C7D9A5B58789B /* PromptImproverView.swift */; };
+		98277BA328C26CDA8DA2A46B /* ProfileProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9077022A4630D603602752D /* ProfileProgress.swift */; };
 		9A7CED87731D4AC03E65A55A /* TeachCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739EFA7E4155EB21F4F1210A /* TeachCardView.swift */; };
 		A288EB93D24398A4AB8FBFC0 /* UnitNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5F91AB776EDBDCAFA2346F9 /* UnitNodeView.swift */; };
 		AC7BB9063D85023118FEBFFA /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37580722F4E2A9E0FBFC380 /* RootView.swift */; };
@@ -52,6 +54,7 @@
 		0911AA41A18AD3C6E17EF947 /* BigIdea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigIdea.swift; sourceTree = "<group>"; };
 		0A0257358E35C6A39C42D578 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		0F4E48499740DA716EA57C50 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		13C490C74B435D26290B5849 /* ProfilePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePickerView.swift; sourceTree = "<group>"; };
 		143A6FBCA3ABB50F56BDA273 /* Gating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gating.swift; sourceTree = "<group>"; };
 		1B6F504F38A72AC666DAD103 /* ParentGateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentGateView.swift; sourceTree = "<group>"; };
 		22BF5669421335D44B2C262B /* Curriculum+Explorers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Curriculum+Explorers.swift"; sourceTree = "<group>"; };
@@ -78,6 +81,7 @@
 		A3A29DED5D77EF5C048C03A8 /* Curriculum+Sprouts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Curriculum+Sprouts.swift"; sourceTree = "<group>"; };
 		A8535600D2A0020D394B4EEB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A8C456795636BBBF5344E469 /* SortGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortGameView.swift; sourceTree = "<group>"; };
+		A9077022A4630D603602752D /* ProfileProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileProgress.swift; sourceTree = "<group>"; };
 		AA2AE1B65EBA4C0C8C7E9BDB /* SprocketApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SprocketApp.swift; sourceTree = "<group>"; };
 		AB86F91C8FB9DC80B08FD33E /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		AD630EE33E02F84BA562D2E8 /* UnlockPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockPromptView.swift; sourceTree = "<group>"; };
@@ -132,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				585F3484D7607B96E3DA7779 /* HomeView.swift */,
+				13C490C74B435D26290B5849 /* ProfilePickerView.swift */,
 				E8E56D795A25DB0D67679E47 /* TrophyRoomView.swift */,
 				C5F91AB776EDBDCAFA2346F9 /* UnitNodeView.swift */,
 				AD630EE33E02F84BA562D2E8 /* UnlockPromptView.swift */,
@@ -249,6 +254,7 @@
 				47AFE702E53114CAC27200F2 /* Curriculum.swift */,
 				143A6FBCA3ABB50F56BDA273 /* Gating.swift */,
 				C391D47FB730E88E033FF9E7 /* LearnerProfile.swift */,
+				A9077022A4630D603602752D /* ProfileProgress.swift */,
 				8ECCC124E2C858C704D8DC72 /* Tier.swift */,
 				633B073509F51AE8EA5B450D /* UnitProgress.swift */,
 			);
@@ -344,6 +350,8 @@
 				FD6321B2071C637141646BAA /* ParentDashboardView.swift in Sources */,
 				894DA6EAFA7DFBC6E9B3A9D7 /* ParentGateView.swift in Sources */,
 				E9C263090A1B4FFB776ECE9E /* PaywallView.swift in Sources */,
+				93733DFDD68B51EF6B3CE6E8 /* ProfilePickerView.swift in Sources */,
+				98277BA328C26CDA8DA2A46B /* ProfileProgress.swift in Sources */,
 				B82E70E2D78C35194E00893C /* ProgressStore.swift in Sources */,
 				970E8F2A781E6CC81BA5B0AC /* PromptImproverView.swift in Sources */,
 				E7504163AAD049AF0DD24248 /* QuizView.swift in Sources */,
