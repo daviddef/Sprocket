@@ -3,15 +3,22 @@ import SwiftUI
 /// A check-for-understanding. One pick, then the answer is revealed with a
 /// gentle explanation — a wrong choice is never buzzed or blocked; the child
 /// sees why and moves on. First-pick correctness is reported once, for stars.
+///
+/// When narration is on (the default for pre-readers in Sprouts) the whole
+/// question is operable by ear: each answer gets its own speaker, and the
+/// explanation is read aloud on reveal. A five-year-old must never be blocked
+/// from answering because they can't yet read the options.
 struct QuizView: View {
     let question: QuizQuestion
     var tint: Color = Theme.spark
     let onResult: (Bool) -> Void
     let onNext: () -> Void
 
+    @EnvironmentObject private var store: ProgressStore
     @State private var picked: Int?
 
     private var revealed: Bool { picked != nil }
+    private var narrating: Bool { store.narrationEnabled }
 
     var body: some View {
         VStack(spacing: 20) {
@@ -50,9 +57,27 @@ struct QuizView: View {
             }
         }
         .animation(.easeInOut(duration: 0.25), value: picked)
+        .onChange(of: picked) { _, newValue in
+            // Pre-readers can't read the explanation, which is where the actual
+            // teaching happens on a wrong answer. Read it to them.
+            guard narrating, newValue != nil else { return }
+            SpeechService.shared.speak(question.explanation)
+        }
     }
 
+    /// The tap target and its speaker are siblings, not nested buttons — a
+    /// Button inside a Button swallows the inner tap.
+    @ViewBuilder
     private func optionButton(_ i: Int, _ option: String) -> some View {
+        HStack(spacing: 8) {
+            optionTapTarget(i, option)
+            if narrating && !revealed {
+                SpeakerButton(text: option)
+            }
+        }
+    }
+
+    private func optionTapTarget(_ i: Int, _ option: String) -> some View {
         Button {
             guard picked == nil else { return }
             picked = i

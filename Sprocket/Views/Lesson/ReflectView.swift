@@ -8,7 +8,10 @@ struct ReflectView: View {
     var tint: Color = Theme.spark
     let onNext: () -> Void
 
+    @EnvironmentObject private var store: ProgressStore
     @State private var picked: Int?
+
+    private var narrating: Bool { store.narrationEnabled }
 
     var body: some View {
         VStack(spacing: 20) {
@@ -32,6 +35,8 @@ struct ReflectView: View {
 
             VStack(spacing: 12) {
                 ForEach(Array(prompt.options.enumerated()), id: \.offset) { i, option in
+                  HStack(spacing: 8) {
+                    // Speaker sits beside the choice, never nested inside it.
                     Button {
                         Haptics.shared.tap(); picked = i
                     } label: {
@@ -50,6 +55,8 @@ struct ReflectView: View {
                             }
                     }
                     .buttonStyle(.plain)
+                    if narrating { SpeakerButton(text: option) }
+                  }
                 }
             }
             .padding(.horizontal, 24)
