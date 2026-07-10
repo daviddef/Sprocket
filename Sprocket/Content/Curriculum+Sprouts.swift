@@ -17,19 +17,24 @@ extension Curriculum {
             screens: [
                 .teach(TeachCard(
                     title: "Hi! I'm Sprocket.",
-                    body: "I'm a friendly robot. I run on something called AI. Let's learn what that means together!",
+                    body: "I'm a cartoon robot in this app. I'm not alive — people drew me and wrote everything I say. Let's learn about AI together!",
                     symbol: "face.smiling",
-                    narration: "Hi! I'm Sprocket. I'm a friendly robot. I run on something called A.I. Let's learn what that means together!")),
+                    narration: "Hi! I'm Sprocket. I'm a cartoon robot in this app. I'm not alive. People drew me and wrote everything I say. Let's learn about A.I. together!")),
                 .teach(TeachCard(
                     title: "What is AI?",
-                    body: "AI is a clever computer. It can guess, sort, and learn — a little like you do!",
-                    symbol: "brain.head.profile",
-                    narration: "A.I. is a clever computer. It can guess, sort, and learn, a little like you do!")),
+                    body: "AI is a computer program. You give it something — like a picture. It looks for patterns. Then it gives an answer back.",
+                    symbol: "arrow.left.arrow.right",
+                    narration: "A.I. is a computer program. You give it something, like a picture. It looks for patterns. Then it gives an answer back.")),
+                .teach(TeachCard(
+                    title: "People Make AI",
+                    body: "AI doesn't think or feel. It follows patterns in data. People build it, and people choose what it's used for.",
+                    symbol: "person.2.fill",
+                    narration: "A.I. doesn't think or feel. It follows patterns in data. People build it, and people choose what it's used for.")),
                 .game(.sort(SortGame(
                     title: "Robot or Not?",
-                    intro: "Some things use a smart computer. Some are just everyday things. Can you sort them?",
-                    binA: .init(label: "Smart Computer", symbol: "cpu", color: Theme.explorers),
-                    binB: .init(label: "Just a Thing", symbol: "cube.box", color: Theme.inkSoft),
+                    intro: "Some of these use AI. Some don't. Can you sort them?",
+                    binA: .init(label: "Uses AI", symbol: "cpu", color: Theme.explorers),
+                    binB: .init(label: "No AI", symbol: "cube.box", color: Theme.inkSoft),
                     items: [
                         .init(label: "Smart speaker", symbol: "hifispeaker.fill", inA: true),
                         .init(label: "A rock", symbol: "mountain.2.fill", inA: false),
@@ -42,34 +47,34 @@ extension Curriculum {
                     prompt: "Which one uses AI?",
                     options: ["A wooden chair", "A speaker that answers your questions", "A paper cup"],
                     correctIndex: 1,
-                    explanation: "Yes! A speaker that listens and answers uses AI. A chair and a cup just sit there.",
+                    explanation: "Yes! A speaker that takes in your voice and gives an answer back uses AI. A chair and a cup just sit there.",
                     narration: "Which one uses A.I.?")),
                 .reflect(ReflectPrompt(
-                    prompt: "How do you feel about meeting AI?",
+                    prompt: "How do you feel about learning about AI?",
                     options: ["Excited!", "Curious", "A little unsure"],
-                    narration: "How do you feel about meeting A.I.? There's no wrong answer.")),
+                    narration: "How do you feel about learning about A.I.? There's no wrong answer.")),
             ]),
 
         // 2 ──────────────────────────────────────────────────────────────
         Unit(
             id: "sprouts.2", tier: .sprouts, bigIdea: .perception, order: 2,
-            title: "Teach the Puppy to See",
-            subtitle: "Computers can sense",
+            title: "Pictures Go In",
+            subtitle: "Computers take in data",
             symbol: "eye.fill",
             screens: [
                 .teach(TeachCard(
-                    title: "Computers Can 'See'",
-                    body: "With a camera, a computer can look at a picture. But first, we have to teach it what things are.",
+                    title: "A Camera Takes It In",
+                    body: "A camera turns a picture into data. The program can't tell what's in it yet — first we have to show it lots of examples.",
                     symbol: "camera.fill",
-                    narration: "With a camera, a computer can look at a picture. But first, we have to teach it what things are.")),
+                    narration: "A camera turns a picture into data. The program can't tell what's in it yet. First we have to show it lots of examples.")),
                 .teach(TeachCard(
-                    title: "We Teach by Showing",
-                    body: "To teach an AI puppy a cat from a dog, we show it lots of cats and lots of dogs. That's called examples.",
+                    title: "We Train It by Showing",
+                    body: "To train a program to tell a cat from a dog, we show it lots of cats and lots of dogs. Those are called examples.",
                     symbol: "photo.on.rectangle.angled",
-                    narration: "To teach an A.I. puppy a cat from a dog, we show it lots of cats and lots of dogs. That's called examples.")),
+                    narration: "To train a program to tell a cat from a dog, we show it lots of cats and lots of dogs. Those are called examples.")),
                 .game(.sort(SortGame(
                     title: "Show the Examples",
-                    intro: "Help teach the puppy! Sort each picture so it learns cats from dogs.",
+                    intro: "Help train the program! Sort each picture so it can tell cats from dogs.",
                     binA: .init(label: "Cat", symbol: "cat.fill", color: Theme.sprouts),
                     binB: .init(label: "Dog", symbol: "dog.fill", color: Theme.explorers),
                     items: [
@@ -85,9 +90,9 @@ extension Curriculum {
                     explanation: "Right! We show it many examples. The more good examples, the better it learns.",
                     narration: "How does an A.I. learn what a cat looks like?")),
                 .reflect(ReflectPrompt(
-                    prompt: "If we only showed the puppy cats, could it learn dogs?",
+                    prompt: "If we only showed the program cats, could it learn dogs?",
                     options: ["No — it needs dog examples too", "Yes, easily"],
-                    narration: "If we only showed the puppy cats, could it learn dogs?")),
+                    narration: "If we only showed the program cats, could it learn dogs?")),
             ]),
 
         // 3 ──────────────────────────────────────────────────────────────
@@ -98,10 +103,10 @@ extension Curriculum {
             symbol: "arrow.triangle.branch",
             screens: [
                 .teach(TeachCard(
-                    title: "AI Thinks in Steps",
-                    body: "A computer can guess things by asking yes-or-no questions, one at a time, like a treasure map.",
+                    title: "AI Works in Steps",
+                    body: "A program can sort things by checking yes-or-no questions, one at a time, like a treasure map.",
                     symbol: "map.fill",
-                    narration: "A computer can guess things by asking yes or no questions, one at a time, like a treasure map.")),
+                    narration: "A program can sort things by checking yes or no questions, one at a time, like a treasure map.")),
                 .game(.decisionTree(DecisionTreeGame(
                     intro: "Think of an animal. Answer yes or no, and watch the computer guess it!",
                     goal: "Let's guess your animal",
@@ -134,14 +139,14 @@ extension Curriculum {
             screens: [
                 .teach(TeachCard(
                     title: "AI Gets Better",
-                    body: "When AI does something right, we say 'good job!' When it's wrong, we help it fix it. That's how it learns.",
+                    body: "When the program gets it right, we mark it correct. When it's wrong, we show it the right answer. Bit by bit, its guesses improve.",
                     symbol: "arrow.up.heart.fill",
-                    narration: "When A.I. does something right, we say good job! When it's wrong, we help it fix it. That's how it learns.")),
+                    narration: "When the program gets it right, we mark it correct. When it's wrong, we show it the right answer. Bit by bit, its guesses improve.")),
                 .teach(TeachCard(
-                    title: "Practice Makes Better",
-                    body: "Just like you get better at drawing or soccer, AI gets better with lots of practice.",
+                    title: "More Examples, Better Guesses",
+                    body: "You get better at drawing because you want to. A program only improves when people give it more examples.",
                     symbol: "figure.run",
-                    narration: "Just like you get better at drawing or soccer, A.I. gets better with lots of practice.")),
+                    narration: "You get better at drawing because you want to. A program only improves when people give it more examples.")),
                 .quiz(QuizQuestion(
                     prompt: "How does AI get better at something?",
                     options: ["It practices with lots of examples", "It takes a nap", "It never changes"],
@@ -179,9 +184,9 @@ extension Curriculum {
                     narration: "Which is a clearer thing to ask?")),
                 .teach(TeachCard(
                     title: "AI Isn't a Person",
-                    body: "The buddy is a helper, not a real friend with feelings. And sometimes it can be wrong!",
+                    body: "It doesn't understand you the way a friend does. It matches patterns in the words. It has no feelings — and it can be wrong!",
                     symbol: "exclamationmark.bubble.fill",
-                    narration: "The buddy is a helper, not a real friend with feelings. And sometimes it can be wrong!")),
+                    narration: "It doesn't understand you the way a friend does. It matches patterns in the words. It has no feelings, and it can be wrong!")),
                 .reflect(ReflectPrompt(
                     prompt: "If AI tells you something surprising, what should you do?",
                     options: ["Check with a grown-up", "Believe it right away"],
@@ -225,10 +230,10 @@ extension Curriculum {
             symbol: "ear.fill",
             screens: [
                 .teach(TeachCard(
-                    title: "Computers Can Listen",
-                    body: "With a microphone, AI can hear your voice and understand the words you say.",
+                    title: "Sound Goes In",
+                    body: "A microphone turns your voice into data — information a computer can use. Then the program matches patterns to find the words.",
                     symbol: "mic.fill",
-                    narration: "With a microphone, A.I. can hear your voice and understand the words you say.")),
+                    narration: "A microphone turns your voice into data. That's information a computer can use. Then the program matches patterns to find the words.")),
                 .teach(TeachCard(
                     title: "It Learns Sounds Too",
                     body: "Just like pictures, we teach AI sounds by playing it lots and lots of examples.",
@@ -247,11 +252,11 @@ extension Curriculum {
                         .init(label: "A doorbell", symbol: "bell.fill", inA: true),
                     ]))),
                 .quiz(QuizQuestion(
-                    prompt: "What does AI use to hear you?",
+                    prompt: "What does AI use to take in sound?",
                     options: ["A camera", "A microphone", "A magnet"],
                     correctIndex: 1,
-                    explanation: "Yes! A microphone lets AI listen. A camera is for seeing.",
-                    narration: "What does A.I. use to hear you?")),
+                    explanation: "Yes! A microphone turns sound into data. A camera takes in pictures instead.",
+                    narration: "What does A.I. use to take in sound?")),
                 .reflect(ReflectPrompt(
                     prompt: "Do you ever talk to an AI at home?",
                     options: ["Yes, a speaker", "Yes, a phone", "Not yet"],
@@ -358,7 +363,7 @@ extension Curriculum {
                     narration: "Who decides how A.I. is used?")),
                 .reflect(ReflectPrompt(
                     prompt: "You finished the whole track! What was your favorite part?",
-                    options: ["Teaching the puppy", "The treasure map", "Talking to AI", "All of it!"],
+                    options: ["Training the program", "The treasure map", "Talking to AI", "All of it!"],
                     narration: "You finished the whole track! What was your favorite part?")),
             ]),
     ]
