@@ -40,9 +40,9 @@ struct PaywallView: View {
         VStack(spacing: 12) {
             MascotView(mood: .cheer, size: 84, tint: Theme.spark)
             Text("Sprocket Plus")
-                .font(.sprocket(30, .heavy))
+                .sprocketFont(30, .heavy)
             Text("Unlock every lesson, every track — for the whole family.")
-                .font(.sprocket(16))
+                .sprocketFont(16)
                 .foregroundStyle(Theme.inkSoft)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 12)
@@ -70,8 +70,8 @@ struct PaywallView: View {
                 .frame(width: 28, height: 28)
                 .background(Circle().fill(Theme.spark.opacity(0.12)))
             VStack(alignment: .leading, spacing: 1) {
-                Text(title).font(.sprocket(15, .bold))
-                Text(sub).font(.sprocket(12)).foregroundStyle(Theme.inkSoft)
+                Text(title).sprocketFont(15, .bold)
+                Text(sub).sprocketFont(12).foregroundStyle(Theme.inkSoft)
             }
         }
     }
@@ -94,19 +94,19 @@ struct PaywallView: View {
                     .font(.system(size: 22)).foregroundStyle(selected ? Theme.spark : Theme.line)
                 VStack(alignment: .leading, spacing: 2) {
                     HStack(spacing: 8) {
-                        Text(plan.title).font(.sprocket(18, .bold))
+                        Text(plan.title).sprocketFont(18, .bold)
                         if let tag = plan.tag {
-                            Text(tag).font(.sprocket(11, .bold)).foregroundStyle(.white)
+                            Text(tag).sprocketFont(11, .bold).foregroundStyle(.white)
                                 .padding(.horizontal, 8).padding(.vertical, 3)
                                 .background(Capsule().fill(Theme.correct))
                         }
                     }
-                    Text(plan.subtitle).font(.sprocket(12)).foregroundStyle(Theme.inkSoft)
+                    Text(plan.subtitle).sprocketFont(12).foregroundStyle(Theme.inkSoft)
                 }
                 Spacer()
                 VStack(alignment: .trailing, spacing: 1) {
-                    Text(plan.price).font(.sprocket(18, .heavy))
-                    Text(plan.cadence).font(.sprocket(11)).foregroundStyle(Theme.inkFaint)
+                    Text(plan.price).sprocketFont(18, .heavy)
+                    Text(plan.cadence).sprocketFont(11).foregroundStyle(Theme.inkFaint)
                 }
             }
             .padding(16)
@@ -127,7 +127,7 @@ struct PaywallView: View {
             if plans.contains(where: { $0.hasTrial }) {
                 Label("Start with a free trial. Cancel anytime in Settings.",
                       systemImage: "gift.fill")
-                    .font(.sprocket(13, .medium))
+                    .sprocketFont(13, .medium)
                     .foregroundStyle(Theme.correct)
             }
         }
@@ -147,9 +147,9 @@ struct PaywallView: View {
     private var footer: some View {
         VStack(spacing: 10) {
             Button("Restore Purchases") { Task { await entitlements.restore() } }
-                .font(.sprocket(14, .semibold)).foregroundStyle(Theme.inkSoft)
+                .sprocketFont(14, .semibold).foregroundStyle(Theme.inkSoft)
             Text("Payment is charged to your Apple Account. Subscriptions renew automatically until cancelled. Manage or cancel anytime in your device Settings.")
-                .font(.sprocket(11)).foregroundStyle(Theme.inkFaint)
+                .sprocketFont(11).foregroundStyle(Theme.inkFaint)
                 .multilineTextAlignment(.center)
         }
         .padding(.top, 4)

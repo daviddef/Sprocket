@@ -20,14 +20,14 @@ struct ReflectView: View {
 
             HStack(alignment: .top, spacing: 10) {
                 Text(prompt.prompt)
-                    .font(.sprocket(22, .bold))
+                    .sprocketFont(22, .bold)
                     .multilineTextAlignment(.center)
                 SpeakerButton(text: prompt.narration ?? prompt.prompt, autoNarrate: true)
             }
             .padding(.horizontal, 24)
 
             Text("There's no wrong answer here.")
-                .font(.sprocket(13, .medium))
+                .sprocketFont(13, .medium)
                 .foregroundStyle(Theme.inkFaint)
 
             VStack(spacing: 12) {
@@ -36,7 +36,7 @@ struct ReflectView: View {
                         Haptics.shared.tap(); picked = i
                     } label: {
                         Text(option)
-                            .font(.sprocket(17, .semibold))
+                            .sprocketFont(17, .semibold)
                             .foregroundStyle(picked == i ? .white : Theme.ink)
                             .frame(maxWidth: .infinity)
                             .padding(16)

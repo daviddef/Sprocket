@@ -28,14 +28,14 @@ struct ParentGateView: View {
                 .foregroundStyle(Theme.spark)
 
             Text("Grown-Ups Only")
-                .font(.sprocket(24, .heavy))
+                .sprocketFont(24, .heavy)
 
             Text("Please solve this to continue.")
-                .font(.sprocket(16))
+                .sprocketFont(16)
                 .foregroundStyle(Theme.inkSoft)
 
             Text("\(a) + \(b) = ?")
-                .font(.sprocket(38, .bold))
+                .sprocketFont(38, .bold)
                 .monospacedDigit()
                 .padding(.vertical, 4)
 
@@ -53,12 +53,12 @@ struct ParentGateView: View {
 
             if wrong {
                 Text("Not quite — try the math again.")
-                    .font(.sprocket(14))
+                    .sprocketFont(14)
                     .foregroundStyle(Theme.gentle)
             }
 
             Button("Cancel") { (onCancel ?? { dismiss() })() }
-                .font(.sprocket(16, .semibold))
+                .sprocketFont(16, .semibold)
                 .foregroundStyle(Theme.inkSoft)
                 .padding(.top, 4)
         }

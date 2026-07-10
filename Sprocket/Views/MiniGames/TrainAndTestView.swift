@@ -57,13 +57,13 @@ struct TrainAndTestView: View {
     private var header: some View {
         VStack(spacing: 8) {
             Label("Train & Test", systemImage: "brain.head.profile")
-                .font(.sprocket(21, .heavy)).foregroundStyle(Theme.ink)
+                .sprocketFont(21, .heavy).foregroundStyle(Theme.ink)
             Text(phase == .choosing ? game.intro : "Now let's see how it does on pictures it has never seen.")
-                .font(.sprocket(14)).foregroundStyle(Theme.inkSoft)
+                .sprocketFont(14).foregroundStyle(Theme.inkSoft)
                 .multilineTextAlignment(.center)
             HStack(spacing: 8) {
                 Image(systemName: "target").foregroundStyle(tint)
-                Text(game.goal).font(.sprocket(14, .semibold)).foregroundStyle(Theme.ink)
+                Text(game.goal).sprocketFont(14, .semibold).foregroundStyle(Theme.ink)
             }
             .padding(12)
             .frame(maxWidth: .infinity)
@@ -78,7 +78,7 @@ struct TrainAndTestView: View {
     private var choosingPhase: some View {
         VStack(spacing: 14) {
             Text("Pick \(game.pickCount) examples to train on  (\(chosen.count)/\(game.pickCount))")
-                .font(.sprocket(13, .bold)).foregroundStyle(Theme.inkFaint)
+                .sprocketFont(13, .bold).foregroundStyle(Theme.inkFaint)
 
             VStack(spacing: 10) {
                 ForEach(game.pool) { example in
@@ -113,7 +113,7 @@ struct TrainAndTestView: View {
                     .frame(width: 44, height: 44)
                     .background(Circle().fill(isChosen ? tint : tint.opacity(0.12)))
                 Text(example.label)
-                    .font(.sprocket(15, .semibold)).foregroundStyle(Theme.ink)
+                    .sprocketFont(15, .semibold).foregroundStyle(Theme.ink)
                     .multilineTextAlignment(.leading)
                 Spacer(minLength: 4)
                 Image(systemName: isChosen ? "checkmark.circle.fill" : "circle")
@@ -142,7 +142,7 @@ struct TrainAndTestView: View {
             scoreCard
 
             VStack(alignment: .leading, spacing: 10) {
-                Text("Test results").font(.sprocket(14, .bold)).foregroundStyle(Theme.inkFaint)
+                Text("Test results").sprocketFont(14, .bold).foregroundStyle(Theme.inkFaint)
                 ForEach(Array(game.tests.enumerated()), id: \.element.id) { i, test in
                     testRow(test, passed: i < testsPassed)
                 }
@@ -150,14 +150,14 @@ struct TrainAndTestView: View {
             .padding(.horizontal, 20)
 
             VStack(alignment: .leading, spacing: 10) {
-                Text("What you trained it on").font(.sprocket(14, .bold)).foregroundStyle(Theme.inkFaint)
+                Text("What you trained it on").sprocketFont(14, .bold).foregroundStyle(Theme.inkFaint)
                 ForEach(chosenExamples) { example in
                     HStack(alignment: .top, spacing: 10) {
                         Image(systemName: example.isGood ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
                             .foregroundStyle(example.isGood ? Theme.correct : Theme.gentle)
                         VStack(alignment: .leading, spacing: 1) {
-                            Text(example.label).font(.sprocket(14, .semibold)).foregroundStyle(Theme.ink)
-                            Text(example.why).font(.sprocket(12)).foregroundStyle(Theme.inkSoft)
+                            Text(example.label).sprocketFont(14, .semibold).foregroundStyle(Theme.ink)
+                            Text(example.why).sprocketFont(12).foregroundStyle(Theme.inkSoft)
                         }
                         Spacer(minLength: 0)
                     }
@@ -180,12 +180,12 @@ struct TrainAndTestView: View {
     private var scoreCard: some View {
         VStack(spacing: 6) {
             Text("\(accuracy)%")
-                .font(.sprocket(46, .heavy)).monospacedDigit()
+                .sprocketFont(46, .heavy).monospacedDigit()
                 .foregroundStyle(accuracy >= 100 ? Theme.correct : (accuracy >= 50 ? Theme.gentle : Theme.spark))
             Text("accuracy on new pictures")
-                .font(.sprocket(13)).foregroundStyle(Theme.inkFaint)
+                .sprocketFont(13).foregroundStyle(Theme.inkFaint)
             Text(verdict)
-                .font(.sprocket(14, .semibold))
+                .sprocketFont(14, .semibold)
                 .foregroundStyle(Theme.ink)
                 .multilineTextAlignment(.center)
                 .padding(.top, 4)
@@ -211,10 +211,10 @@ struct TrainAndTestView: View {
                 .foregroundStyle(Theme.inkSoft)
                 .frame(width: 38, height: 38)
                 .background(Circle().fill(Theme.ground3))
-            Text(test.label).font(.sprocket(14, .semibold)).foregroundStyle(Theme.ink)
+            Text(test.label).sprocketFont(14, .semibold).foregroundStyle(Theme.ink)
             Spacer(minLength: 4)
             Label(passed ? "Correct" : "Wrong", systemImage: passed ? "checkmark" : "xmark")
-                .font(.sprocket(12, .bold))
+                .sprocketFont(12, .bold)
                 .foregroundStyle(passed ? Theme.correct : Theme.gentle)
         }
         .padding(10)

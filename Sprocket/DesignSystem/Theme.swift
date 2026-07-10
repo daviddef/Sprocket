@@ -47,9 +47,34 @@ extension Color {
     }
 }
 
-extension Font {
-    /// The app speaks in one rounded voice at a small set of sizes.
-    static func sprocket(_ size: CGFloat, _ weight: Font.Weight = .regular) -> Font {
-        .system(size: size, weight: weight, design: .rounded)
+/// The app speaks in one rounded voice at a small set of sizes — and every one
+/// of them now scales with the reader's Dynamic Type setting.
+///
+/// This has to be a `ViewModifier` rather than a `Font` factory: SwiftUI's
+/// `Font.system(size:)` is a *fixed* point size and ignores Dynamic Type
+/// entirely (verified in the simulator — at `accessibility-extra-large` the
+/// old `Font.sprocket` rendered pixel-identical to the default size). Only
+/// `@ScaledMetric` tracks the accessibility text size, and it has to live on a
+/// View to stay reactive when the setting changes while the app is running.
+private struct SprocketFont: ViewModifier {
+    // Declared bare: the storage is initialised in `init` so `relativeTo`
+    // can be supplied alongside the caller's size.
+    @ScaledMetric private var scaledSize: CGFloat
+    private let weight: Font.Weight
+
+    init(size: CGFloat, weight: Font.Weight) {
+        _scaledSize = ScaledMetric(wrappedValue: size, relativeTo: .body)
+        self.weight = weight
+    }
+
+    func body(content: Content) -> some View {
+        content.font(.system(size: scaledSize, weight: weight, design: .rounded))
+    }
+}
+
+extension View {
+    /// Rounded system type at `size`, scaled for the reader's text-size setting.
+    func sprocketFont(_ size: CGFloat, _ weight: Font.Weight = .regular) -> some View {
+        modifier(SprocketFont(size: size, weight: weight))
     }
 }

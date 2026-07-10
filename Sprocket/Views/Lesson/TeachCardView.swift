@@ -22,12 +22,12 @@ struct TeachCardView: View {
             VStack(spacing: 14) {
                 HStack(alignment: .center, spacing: 10) {
                     Text(card.title)
-                        .font(.sprocket(27, .heavy))
+                        .sprocketFont(27, .heavy)
                         .multilineTextAlignment(.center)
                     SpeakerButton(text: narration, autoNarrate: true)
                 }
                 Text(card.body)
-                    .font(.sprocket(18))
+                    .sprocketFont(18)
                     .foregroundStyle(Theme.inkSoft)
                     .multilineTextAlignment(.center)
                     .lineSpacing(3)

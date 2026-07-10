@@ -39,7 +39,7 @@ struct ParentDashboardView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { dismiss() }.font(.sprocket(16, .bold))
+                    Button("Done") { dismiss() }.sprocketFont(16, .bold)
                 }
             }
             .sheet(isPresented: $showPaywall) { PaywallView() }
@@ -69,16 +69,16 @@ struct ParentDashboardView: View {
                     .background(Circle().fill(Theme.ground2))
                 VStack(alignment: .leading, spacing: 2) {
                     Text(entitlements.isSubscribed ? "Sprocket Plus · Active" : "Sprocket Plus")
-                        .font(.sprocket(16, .bold))
+                        .sprocketFont(16, .bold)
                     Text(entitlements.isSubscribed
                          ? "Every lesson unlocked. Manage in device Settings."
                          : "Unlock every lesson & track for the whole family.")
-                        .font(.sprocket(12)).foregroundStyle(Theme.inkSoft)
+                        .sprocketFont(12).foregroundStyle(Theme.inkSoft)
                 }
                 Spacer(minLength: 8)
                 if !entitlements.isSubscribed {
                     Button("See Plans") { Haptics.shared.tap(); showPaywall = true }
-                        .font(.sprocket(13, .bold))
+                        .sprocketFont(13, .bold)
                         .foregroundStyle(.white)
                         .padding(.horizontal, 14).padding(.vertical, 9)
                         .background(Capsule().fill(Theme.spark))
@@ -98,7 +98,7 @@ struct ParentDashboardView: View {
                     cardTitle(store.profiles.count > 1 ? "Children" : "Child")
                     Spacer()
                     Text("\(store.profiles.count)/\(ProgressStore.maxChildren)")
-                        .font(.sprocket(12, .semibold)).foregroundStyle(Theme.inkFaint)
+                        .sprocketFont(12, .semibold).foregroundStyle(Theme.inkFaint)
                         .monospacedDigit()
                 }
 
@@ -111,7 +111,7 @@ struct ParentDashboardView: View {
                     Haptics.shared.tap(); showAddChild = true
                 } label: {
                     Label("Add a child", systemImage: "plus.circle.fill")
-                        .font(.sprocket(15, .bold))
+                        .sprocketFont(15, .bold)
                         .foregroundStyle(store.canAddChild ? Theme.spark : Theme.inkFaint)
                 }
                 .disabled(!store.canAddChild)
@@ -119,7 +119,7 @@ struct ParentDashboardView: View {
 
                 if !store.canAddChild {
                     Text("Maximum of \(ProgressStore.maxChildren) children per device.")
-                        .font(.sprocket(11)).foregroundStyle(Theme.inkFaint)
+                        .sprocketFont(11).foregroundStyle(Theme.inkFaint)
                 }
             }
         }
@@ -130,7 +130,7 @@ struct ParentDashboardView: View {
         let total = Curriculum.track(for: child.tier).count
         return HStack(spacing: 12) {
             Text(String(child.name.first.map(String.init) ?? "?").uppercased())
-                .font(.sprocket(18, .heavy)).foregroundStyle(.white)
+                .sprocketFont(18, .heavy).foregroundStyle(.white)
                 .frame(width: 44, height: 44)
                 .background(Circle().fill(child.tier.color))
                 .overlay(alignment: .bottomTrailing) {
@@ -144,9 +144,9 @@ struct ParentDashboardView: View {
                 }
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(child.name).font(.sprocket(17, .bold))
+                Text(child.name).sprocketFont(17, .bold)
                 Text("\(child.tier.name) · \(store.completedCount(for: child))/\(total) lessons · \(store.xp(for: child)) XP")
-                    .font(.sprocket(11)).foregroundStyle(Theme.inkFaint)
+                    .sprocketFont(11).foregroundStyle(Theme.inkFaint)
             }
             Spacer(minLength: 4)
 
@@ -199,7 +199,7 @@ struct ParentDashboardView: View {
             VStack(alignment: .leading, spacing: 12) {
                 cardTitle("The Five Big Ideas")
                 Text("Sprocket's curriculum follows the AI4K12 national framework.")
-                    .font(.sprocket(13)).foregroundStyle(Theme.inkSoft)
+                    .sprocketFont(13).foregroundStyle(Theme.inkSoft)
                 ForEach(BigIdea.allCases) { idea in
                     let units = Curriculum.units(in: store.tier, idea: idea)
                     let done = units.filter { store.isCompleted($0.id) }.count
@@ -210,13 +210,13 @@ struct ParentDashboardView: View {
                             .frame(width: 30, height: 30)
                             .background(Circle().fill(idea.color.opacity(0.14)))
                         VStack(alignment: .leading, spacing: 1) {
-                            Text(idea.title).font(.sprocket(14, .semibold))
-                            Text(idea.kidTitle).font(.sprocket(11)).foregroundStyle(Theme.inkFaint)
+                            Text(idea.title).sprocketFont(14, .semibold)
+                            Text(idea.kidTitle).sprocketFont(11).foregroundStyle(Theme.inkFaint)
                         }
                         Spacer()
                         if !units.isEmpty {
                             Text("\(done)/\(units.count)")
-                                .font(.sprocket(13, .bold)).monospacedDigit()
+                                .sprocketFont(13, .bold).monospacedDigit()
                                 .foregroundStyle(done == units.count && done > 0 ? Theme.correct : Theme.inkSoft)
                         }
                     }
@@ -237,7 +237,7 @@ struct ParentDashboardView: View {
                                 .font(.system(size: 20, weight: .bold)).foregroundStyle(.white)
                                 .frame(width: 46, height: 46)
                                 .background(Circle().fill(badge.color))
-                            Text(badge.title).font(.sprocket(10, .semibold))
+                            Text(badge.title).sprocketFont(10, .semibold)
                                 .multilineTextAlignment(.center)
                         }
                     }
@@ -270,7 +270,7 @@ struct ParentDashboardView: View {
         card(tint: Theme.correctBG) {
             VStack(alignment: .leading, spacing: 8) {
                 Label("Private by design", systemImage: "lock.shield.fill")
-                    .font(.sprocket(16, .bold)).foregroundStyle(Theme.correct)
+                    .sprocketFont(16, .bold).foregroundStyle(Theme.correct)
                 privacyLine("No account or sign-up needed")
                 privacyLine("No ads and no third-party tracking")
                 privacyLine("No personal data leaves this device")
@@ -287,14 +287,14 @@ struct ParentDashboardView: View {
                     confirmReset = true
                 } label: {
                     Label("Reset progress", systemImage: "arrow.counterclockwise")
-                        .font(.sprocket(15, .semibold)).foregroundStyle(Theme.gentle)
+                        .sprocketFont(15, .semibold).foregroundStyle(Theme.gentle)
                 }
                 Divider()
                 Button {
                     confirmDelete = true
                 } label: {
                     Label("Remove all children & data", systemImage: "trash")
-                        .font(.sprocket(15, .semibold)).foregroundStyle(Theme.spark)
+                        .sprocketFont(15, .semibold).foregroundStyle(Theme.spark)
                 }
             }
         }
@@ -321,13 +321,13 @@ struct ParentDashboardView: View {
     }
 
     private func cardTitle(_ text: String) -> some View {
-        Text(text).font(.sprocket(17, .bold)).foregroundStyle(Theme.ink)
+        Text(text).sprocketFont(17, .bold).foregroundStyle(Theme.ink)
     }
 
     private func stat(_ value: String, _ label: String, _ tint: Color) -> some View {
         VStack(spacing: 3) {
-            Text(value).font(.sprocket(20, .heavy)).foregroundStyle(tint).monospacedDigit()
-            Text(label).font(.sprocket(11, .medium)).foregroundStyle(Theme.inkFaint)
+            Text(value).sprocketFont(20, .heavy).foregroundStyle(tint).monospacedDigit()
+            Text(label).sprocketFont(11, .medium).foregroundStyle(Theme.inkFaint)
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
@@ -337,8 +337,8 @@ struct ParentDashboardView: View {
         HStack(spacing: 10) {
             Image(systemName: icon).foregroundStyle(store.tier.color).frame(width: 24)
             VStack(alignment: .leading, spacing: 1) {
-                Text(title).font(.sprocket(15, .semibold)).foregroundStyle(Theme.ink)
-                Text(sub).font(.sprocket(11)).foregroundStyle(Theme.inkFaint)
+                Text(title).sprocketFont(15, .semibold).foregroundStyle(Theme.ink)
+                Text(sub).sprocketFont(11).foregroundStyle(Theme.inkFaint)
             }
         }
     }
@@ -347,7 +347,7 @@ struct ParentDashboardView: View {
         HStack(spacing: 8) {
             Image(systemName: "checkmark.circle.fill")
                 .font(.system(size: 13)).foregroundStyle(Theme.correct)
-            Text(text).font(.sprocket(13)).foregroundStyle(Theme.ink)
+            Text(text).sprocketFont(13).foregroundStyle(Theme.ink)
         }
     }
 }
@@ -366,14 +366,14 @@ struct AddChildView: View {
             ScrollView {
                 VStack(spacing: 18) {
                     TextField("Name or nickname", text: $name)
-                        .font(.sprocket(18, .semibold))
+                        .sprocketFont(18, .semibold)
                         .multilineTextAlignment(.center)
                         .textInputAutocapitalization(.words)
                         .padding(16)
                         .background(RoundedRectangle(cornerRadius: 14).fill(Theme.ground2))
                         .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(Theme.line))
 
-                    Text("Pick their track").font(.sprocket(15, .bold))
+                    Text("Pick their track").sprocketFont(15, .bold)
                         .frame(maxWidth: .infinity, alignment: .leading)
 
                     ForEach(Tier.allCases) { t in
@@ -387,9 +387,9 @@ struct AddChildView: View {
                                     .frame(width: 48, height: 48)
                                     .background(Circle().fill(t.softColor))
                                 VStack(alignment: .leading, spacing: 2) {
-                                    Text(t.name).font(.sprocket(17, .bold)).foregroundStyle(Theme.ink)
-                                    Text(t.ageRange).font(.sprocket(12, .semibold)).foregroundStyle(t.color)
-                                    Text(t.tagline).font(.sprocket(11)).foregroundStyle(Theme.inkSoft)
+                                    Text(t.name).sprocketFont(17, .bold).foregroundStyle(Theme.ink)
+                                    Text(t.ageRange).sprocketFont(12, .semibold).foregroundStyle(t.color)
+                                    Text(t.tagline).sprocketFont(11).foregroundStyle(Theme.inkSoft)
                                 }
                                 Spacer()
                                 Image(systemName: tier == t ? "checkmark.circle.fill" : "circle")

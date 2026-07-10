@@ -32,7 +32,7 @@ struct TrophyRoomView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { dismiss() }.font(.sprocket(16, .bold))
+                    Button("Done") { dismiss() }.sprocketFont(16, .bold)
                 }
             }
         }
@@ -48,11 +48,11 @@ struct TrophyRoomView: View {
                 .shadow(color: tint.opacity(0.35), radius: 6, y: 3)
             VStack(alignment: .leading, spacing: 2) {
                 Text("\(earnedCount) of \(Badge.allCases.count) badges")
-                    .font(.sprocket(20, .heavy))
+                    .sprocketFont(20, .heavy)
                 Text(earnedCount == Badge.allCases.count
                      ? "You collected them all! Wow!"
                      : "Keep learning to earn them all!")
-                    .font(.sprocket(13)).foregroundStyle(Theme.inkSoft)
+                    .sprocketFont(13).foregroundStyle(Theme.inkSoft)
             }
             Spacer()
         }
@@ -74,10 +74,10 @@ struct TrophyRoomView: View {
             }
             VStack(spacing: 3) {
                 Text(badge.title)
-                    .font(.sprocket(15, .bold))
+                    .sprocketFont(15, .bold)
                     .foregroundStyle(earned ? Theme.ink : Theme.inkFaint)
                 Text(badge.blurb)
-                    .font(.sprocket(11))
+                    .sprocketFont(11)
                     .foregroundStyle(Theme.inkFaint)
                     .multilineTextAlignment(.center)
                     .lineLimit(2)

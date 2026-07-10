@@ -38,9 +38,9 @@ struct OnboardingView: View {
             MascotView(mood: .happy, size: 120)
             VStack(spacing: 10) {
                 Text("Meet Sprocket")
-                    .font(.sprocket(40, .heavy))
+                    .sprocketFont(40, .heavy)
                 Text("A fun, friendly way to learn what AI is — and how to use it wisely.")
-                    .font(.sprocket(18))
+                    .sprocketFont(18)
                     .foregroundStyle(Theme.inkSoft)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 24)
@@ -50,7 +50,7 @@ struct OnboardingView: View {
                 Button("Get Started") { showGate = true }
                     .buttonStyle(.sprocket)
                 Label("Setup is for grown-ups", systemImage: "person.badge.shield.checkmark")
-                    .font(.sprocket(13))
+                    .sprocketFont(13)
                     .foregroundStyle(Theme.inkFaint)
             }
             .padding(.horizontal, 28)
@@ -64,9 +64,9 @@ struct OnboardingView: View {
         VStack(spacing: 18) {
             VStack(spacing: 6) {
                 Text("Choose a track")
-                    .font(.sprocket(28, .heavy))
+                    .sprocketFont(28, .heavy)
                 Text("Pick the one that fits your child's age. You can change it later.")
-                    .font(.sprocket(15))
+                    .sprocketFont(15)
                     .foregroundStyle(Theme.inkSoft)
                     .multilineTextAlignment(.center)
             }
@@ -102,9 +102,9 @@ struct OnboardingView: View {
                     .frame(width: 54, height: 54)
                     .background(Circle().fill(tier.softColor))
                 VStack(alignment: .leading, spacing: 3) {
-                    Text(tier.name).font(.sprocket(20, .bold)).foregroundStyle(Theme.ink)
-                    Text(tier.ageRange).font(.sprocket(14, .semibold)).foregroundStyle(tier.color)
-                    Text(tier.tagline).font(.sprocket(13)).foregroundStyle(Theme.inkSoft)
+                    Text(tier.name).sprocketFont(20, .bold).foregroundStyle(Theme.ink)
+                    Text(tier.ageRange).sprocketFont(14, .semibold).foregroundStyle(tier.color)
+                    Text(tier.tagline).sprocketFont(13).foregroundStyle(Theme.inkSoft)
                 }
                 Spacer()
                 Image(systemName: selected ? "checkmark.circle.fill" : "circle")
@@ -131,14 +131,14 @@ struct OnboardingView: View {
             Spacer()
             MascotView(mood: .cheer, size: 100, tint: chosenTier.color)
             Text("What should I call you?")
-                .font(.sprocket(26, .heavy))
+                .sprocketFont(26, .heavy)
                 .multilineTextAlignment(.center)
             Text("First name or a nickname — totally optional.")
-                .font(.sprocket(15))
+                .sprocketFont(15)
                 .foregroundStyle(Theme.inkSoft)
 
             TextField("Explorer", text: $childName)
-                .font(.sprocket(20, .semibold))
+                .sprocketFont(20, .semibold)
                 .multilineTextAlignment(.center)
                 .textInputAutocapitalization(.words)
                 .padding(16)

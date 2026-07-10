@@ -9,7 +9,7 @@ struct SprocketButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.sprocket(19, .bold))
+            .sprocketFont(19, .bold)
             .frame(maxWidth: .infinity, minHeight: 58)
             .padding(.horizontal, 16)
             .foregroundStyle(filled ? Color.white : tint)

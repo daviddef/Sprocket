@@ -18,7 +18,7 @@ struct ProfilePickerView: View {
                     }
                     Label("A grown-up can add or remove children.",
                           systemImage: "person.badge.shield.checkmark")
-                        .font(.sprocket(12))
+                        .sprocketFont(12)
                         .foregroundStyle(Theme.inkFaint)
                         .padding(.top, 8)
                 }
@@ -29,7 +29,7 @@ struct ProfilePickerView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { dismiss() }.font(.sprocket(16, .bold))
+                    Button("Done") { dismiss() }.sprocketFont(16, .bold)
                 }
             }
         }
@@ -47,17 +47,17 @@ struct ProfilePickerView: View {
         } label: {
             HStack(spacing: 14) {
                 Text(initial(profile.name))
-                    .font(.sprocket(24, .heavy))
+                    .sprocketFont(24, .heavy)
                     .foregroundStyle(.white)
                     .frame(width: 56, height: 56)
                     .background(Circle().fill(profile.tier.color))
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(profile.name).font(.sprocket(19, .bold)).foregroundStyle(Theme.ink)
+                    Text(profile.name).sprocketFont(19, .bold).foregroundStyle(Theme.ink)
                     Text("\(profile.tier.name) · \(profile.tier.ageRange)")
-                        .font(.sprocket(12, .semibold)).foregroundStyle(profile.tier.color)
+                        .sprocketFont(12, .semibold).foregroundStyle(profile.tier.color)
                     Text("\(done) of \(total) lessons · \(store.xp(for: profile)) XP")
-                        .font(.sprocket(12)).foregroundStyle(Theme.inkFaint)
+                        .sprocketFont(12).foregroundStyle(Theme.inkFaint)
                 }
                 Spacer()
                 if active {

@@ -21,9 +21,9 @@ struct DecisionTreeView: View {
     var body: some View {
         VStack(spacing: 22) {
             VStack(spacing: 8) {
-                Text(game.goal).font(.sprocket(22, .heavy)).multilineTextAlignment(.center)
+                Text(game.goal).sprocketFont(22, .heavy).multilineTextAlignment(.center)
                 HStack(alignment: .top, spacing: 8) {
-                    Text(game.intro).font(.sprocket(15)).foregroundStyle(Theme.inkSoft)
+                    Text(game.intro).sprocketFont(15).foregroundStyle(Theme.inkSoft)
                         .multilineTextAlignment(.center)
                     SpeakerButton(text: game.intro)
                 }
@@ -61,7 +61,7 @@ struct DecisionTreeView: View {
                     .font(.system(size: 46, weight: .bold)).foregroundStyle(tint)
             }
             Text(question)
-                .font(.sprocket(24, .bold))
+                .sprocketFont(24, .bold)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 28)
 
@@ -81,7 +81,7 @@ struct DecisionTreeView: View {
             }
         } label: {
             Text(label)
-                .font(.sprocket(20, .bold))
+                .sprocketFont(20, .bold)
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity, minHeight: 64)
                 .background(RoundedRectangle(cornerRadius: 18, style: .continuous)
@@ -93,11 +93,11 @@ struct DecisionTreeView: View {
     private func resultView(_ text: String) -> some View {
         VStack(spacing: 20) {
             Text(text)
-                .font(.sprocket(30, .heavy))
+                .sprocketFont(30, .heavy)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 24)
             Text("The computer reached that by following your answers, one step at a time.")
-                .font(.sprocket(14))
+                .sprocketFont(14)
                 .foregroundStyle(Theme.inkSoft)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 32)

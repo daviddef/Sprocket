@@ -21,8 +21,8 @@ struct PromptImproverView: View {
             VStack(spacing: 18) {
                 VStack(spacing: 10) {
                     Label("Better Asking", systemImage: "wand.and.stars")
-                        .font(.sprocket(22, .heavy)).foregroundStyle(Theme.ink)
-                    Text(game.intro).font(.sprocket(15)).foregroundStyle(Theme.inkSoft)
+                        .sprocketFont(22, .heavy).foregroundStyle(Theme.ink)
+                    Text(game.intro).sprocketFont(15).foregroundStyle(Theme.inkSoft)
                         .multilineTextAlignment(.center)
                 }
                 .padding(.horizontal, 24)
@@ -31,7 +31,7 @@ struct PromptImproverView: View {
                 // The goal
                 HStack(alignment: .top, spacing: 10) {
                     Image(systemName: "target").foregroundStyle(tint)
-                    Text(game.task).font(.sprocket(15, .semibold)).foregroundStyle(Theme.ink)
+                    Text(game.task).sprocketFont(15, .semibold).foregroundStyle(Theme.ink)
                     Spacer(minLength: 0)
                 }
                 .padding(14)
@@ -39,7 +39,7 @@ struct PromptImproverView: View {
                 .padding(.horizontal, 20)
 
                 Text("Tap a way of asking to see what the AI would do:")
-                    .font(.sprocket(13, .medium)).foregroundStyle(Theme.inkFaint)
+                    .sprocketFont(13, .medium).foregroundStyle(Theme.inkFaint)
 
                 VStack(spacing: 12) {
                     ForEach(Array(game.options.enumerated()), id: \.element.id) { i, option in
@@ -55,7 +55,7 @@ struct PromptImproverView: View {
                         .padding(.top, 4)
                     if !pickedIsBest {
                         Text("Tip: try tapping the clearest, most specific prompt.")
-                            .font(.sprocket(12)).foregroundStyle(Theme.inkFaint)
+                            .sprocketFont(12).foregroundStyle(Theme.inkFaint)
                     }
                 }
                 Color.clear.frame(height: 12)
@@ -77,7 +77,7 @@ struct PromptImproverView: View {
                     Image(systemName: "text.bubble.fill")
                         .foregroundStyle(reveal ? (option.isBest ? Theme.correct : Theme.gentle) : tint)
                     Text(option.text)
-                        .font(.sprocket(15, .semibold))
+                        .sprocketFont(15, .semibold)
                         .foregroundStyle(Theme.ink)
                         .multilineTextAlignment(.leading)
                     Spacer(minLength: 0)
@@ -90,7 +90,7 @@ struct PromptImproverView: View {
                     HStack(alignment: .top, spacing: 8) {
                         Image(systemName: "arrow.turn.down.right").foregroundStyle(Theme.inkFaint)
                         Text(option.result)
-                            .font(.sprocket(14))
+                            .sprocketFont(14)
                             .foregroundStyle(Theme.inkSoft)
                             .multilineTextAlignment(.leading)
                     }

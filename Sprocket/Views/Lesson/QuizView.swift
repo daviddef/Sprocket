@@ -19,7 +19,7 @@ struct QuizView: View {
 
             HStack(alignment: .top, spacing: 10) {
                 Text(question.prompt)
-                    .font(.sprocket(23, .bold))
+                    .sprocketFont(23, .bold)
                     .multilineTextAlignment(.leading)
                 SpeakerButton(text: question.narration ?? question.prompt,
                               autoNarrate: true)
@@ -62,7 +62,7 @@ struct QuizView: View {
         } label: {
             HStack(spacing: 12) {
                 Text(option)
-                    .font(.sprocket(17, .semibold))
+                    .sprocketFont(17, .semibold)
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(Theme.ink)
                 Spacer(minLength: 8)
@@ -110,7 +110,7 @@ struct QuizView: View {
             Image(systemName: picked == question.correctIndex ? "sparkles" : "lightbulb.fill")
                 .foregroundStyle(picked == question.correctIndex ? Theme.correct : Theme.gentle)
             Text(question.explanation)
-                .font(.sprocket(15))
+                .sprocketFont(15)
                 .foregroundStyle(Theme.ink)
             Spacer(minLength: 0)
         }

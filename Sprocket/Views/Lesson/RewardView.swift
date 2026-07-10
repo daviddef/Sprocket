@@ -19,9 +19,9 @@ struct RewardView: View {
             MascotView(mood: .cheer, size: 104, tint: unit.tier.color)
 
             Text("Lesson Complete!")
-                .font(.sprocket(30, .heavy))
+                .sprocketFont(30, .heavy)
             Text(unit.title)
-                .font(.sprocket(17, .semibold))
+                .sprocketFont(17, .semibold)
                 .foregroundStyle(unit.tier.color)
 
             starRow
@@ -37,7 +37,7 @@ struct RewardView: View {
             if !badges.isEmpty {
                 VStack(spacing: 10) {
                     Text("New badge\(badges.count > 1 ? "s" : "")!")
-                        .font(.sprocket(14, .bold))
+                        .sprocketFont(14, .bold)
                         .foregroundStyle(Theme.inkSoft)
                     HStack(spacing: 14) {
                         ForEach(badges) { badge in badgeView(badge) }
@@ -76,7 +76,7 @@ struct RewardView: View {
     private func rewardChip(icon: String, label: String, tint: Color) -> some View {
         HStack(spacing: 6) {
             Image(systemName: icon).font(.system(size: 14, weight: .bold))
-            Text(label).font(.sprocket(15, .bold))
+            Text(label).sprocketFont(15, .bold)
         }
         .foregroundStyle(tint)
         .padding(.horizontal, 14)
@@ -93,7 +93,7 @@ struct RewardView: View {
                 .background(Circle().fill(badge.color))
                 .shadow(color: badge.color.opacity(0.4), radius: 6, y: 3)
             Text(badge.title)
-                .font(.sprocket(11, .semibold))
+                .sprocketFont(11, .semibold)
                 .foregroundStyle(Theme.ink)
         }
     }

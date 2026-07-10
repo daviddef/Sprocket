@@ -98,13 +98,18 @@ struct UnitNodeView: View {
         VStack(alignment: alignment, spacing: 3) {
             if visible {
                 Text(unit.title)
-                    .font(.sprocket(16, .bold))
+                    .sprocketFont(16, .bold)
                     .foregroundStyle(dimmed ? Theme.inkFaint : Theme.ink)
                     .multilineTextAlignment(alignment == .leading ? .leading : .trailing)
+                    // At large text sizes a single long word ("Prompting")
+                    // exceeds the label slot and SwiftUI breaks it mid-word.
+                    // Shrinking to fit beats rendering "Prompti / ng 101".
+                    .minimumScaleFactor(0.7)
                 Text(subtitleText)
-                    .font(.sprocket(12, .medium))
+                    .sprocketFont(12, .medium)
                     .foregroundStyle(state == .premiumLocked ? Theme.spark : Theme.inkFaint)
                     .multilineTextAlignment(alignment == .leading ? .leading : .trailing)
+                    .minimumScaleFactor(0.75)
             }
         }
         .frame(maxWidth: .infinity, alignment: alignment == .leading ? .leading : .trailing)

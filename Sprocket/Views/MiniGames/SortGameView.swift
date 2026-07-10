@@ -53,10 +53,10 @@ struct SortGameView: View {
 
     private var header: some View {
         VStack(spacing: 8) {
-            Text(game.title).font(.sprocket(22, .heavy))
+            Text(game.title).sprocketFont(22, .heavy)
             HStack(alignment: .top, spacing: 8) {
                 Text(game.intro)
-                    .font(.sprocket(15))
+                    .sprocketFont(15)
                     .foregroundStyle(Theme.inkSoft)
                     .multilineTextAlignment(.center)
                 SpeakerButton(text: game.intro, autoNarrate: false)
@@ -77,7 +77,7 @@ struct SortGameView: View {
                 .frame(width: 150, height: 150)
                 .background(RoundedRectangle(cornerRadius: 28, style: .continuous).fill(Theme.ground2))
                 .shadow(color: Theme.ink.opacity(0.08), radius: 8, y: 4)
-            Text(item.label).font(.sprocket(22, .bold))
+            Text(item.label).sprocketFont(22, .bold)
 
             if let feedback {
                 switch feedback {
@@ -92,7 +92,7 @@ struct SortGameView: View {
 
     private func feedbackLabel(_ text: String, _ color: Color, _ icon: String) -> some View {
         Label(text, systemImage: icon)
-            .font(.sprocket(15, .semibold))
+            .sprocketFont(15, .semibold)
             .foregroundStyle(color)
             .transition(.opacity)
     }
@@ -101,9 +101,9 @@ struct SortGameView: View {
         VStack(spacing: 14) {
             Image(systemName: "checkmark.seal.fill")
                 .font(.system(size: 56)).foregroundStyle(Theme.correct)
-            Text("All sorted!").font(.sprocket(24, .heavy))
+            Text("All sorted!").sprocketFont(24, .heavy)
             Text("Nice sorting. You've got the idea.")
-                .font(.sprocket(15)).foregroundStyle(Theme.inkSoft)
+                .sprocketFont(15).foregroundStyle(Theme.inkSoft)
         }
     }
 
@@ -121,7 +121,7 @@ struct SortGameView: View {
         } label: {
             VStack(spacing: 8) {
                 Image(systemName: bin.symbol).font(.system(size: 26, weight: .bold))
-                Text(bin.label).font(.sprocket(15, .bold)).multilineTextAlignment(.center)
+                Text(bin.label).sprocketFont(15, .bold).multilineTextAlignment(.center)
             }
             .foregroundStyle(.white)
             .frame(maxWidth: .infinity, minHeight: 96)

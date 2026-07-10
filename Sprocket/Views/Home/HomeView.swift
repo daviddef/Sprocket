@@ -86,7 +86,7 @@ struct HomeView: View {
                 VStack(alignment: .leading, spacing: 2) {
                     HStack(spacing: 5) {
                         Text(greeting)
-                            .font(.sprocket(22, .heavy))
+                            .sprocketFont(22, .heavy)
                             .foregroundStyle(Theme.ink)
                         if store.profiles.count > 1 {
                             Image(systemName: "chevron.down.circle.fill")
@@ -95,13 +95,15 @@ struct HomeView: View {
                         }
                     }
                     Text(store.tier.name + " · " + store.tier.ageRange)
-                        .font(.sprocket(13, .semibold))
+                        .sprocketFont(13, .semibold)
                         .foregroundStyle(store.tier.color)
                 }
                 // The header is tight: a long name plus the switcher chevron
                 // would otherwise wrap "Explorers · Ages 9–12" onto two lines.
+                // Scale down hard rather than truncate — at large text sizes
+                // 0.8 still produced "Hi, Sa…" and "Explorers ·…".
                 .lineLimit(1)
-                .minimumScaleFactor(0.8)
+                .minimumScaleFactor(0.55)
             }
             .buttonStyle(.plain)
             .disabled(store.profiles.count <= 1)
@@ -135,7 +137,7 @@ struct HomeView: View {
     private func statChip(icon: String, value: String, tint: Color) -> some View {
         HStack(spacing: 5) {
             Image(systemName: icon).font(.system(size: 13, weight: .bold))
-            Text(value).font(.sprocket(15, .bold)).monospacedDigit()
+            Text(value).sprocketFont(15, .bold).monospacedDigit()
         }
         .foregroundStyle(tint)
         .padding(.horizontal, 10)
@@ -201,10 +203,10 @@ struct HomeView: View {
                 .background(Circle().fill(store.tier.color))
                 .shadow(color: store.tier.color.opacity(0.35), radius: 8, y: 4)
             Text("\(store.tier.name) Track Complete!")
-                .font(.sprocket(20, .heavy))
+                .sprocketFont(20, .heavy)
                 .multilineTextAlignment(.center)
             Text("You've learned all Five Big Ideas. Amazing work, \(store.activeProfile?.name ?? "friend")!")
-                .font(.sprocket(14))
+                .sprocketFont(14)
                 .foregroundStyle(Theme.inkSoft)
                 .multilineTextAlignment(.center)
         }

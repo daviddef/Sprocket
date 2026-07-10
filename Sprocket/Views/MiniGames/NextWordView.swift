@@ -68,10 +68,10 @@ struct NextWordView: View {
     private var header: some View {
         VStack(spacing: 8) {
             Label("Guess the Next Word", systemImage: "text.word.spacing")
-                .font(.sprocket(21, .heavy)).foregroundStyle(Theme.ink)
+                .sprocketFont(21, .heavy).foregroundStyle(Theme.ink)
             HStack(alignment: .top, spacing: 8) {
                 Text(game.intro)
-                    .font(.sprocket(14)).foregroundStyle(Theme.inkSoft)
+                    .sprocketFont(14).foregroundStyle(Theme.inkSoft)
                     .multilineTextAlignment(.center)
                 SpeakerButton(text: game.intro)
             }
@@ -85,7 +85,7 @@ struct NextWordView: View {
 
     private var sentence: some View {
         Text(round.context)
-            .font(.sprocket(20, .bold))
+            .sprocketFont(20, .bold)
             .multilineTextAlignment(.center)
             .padding(18)
             .frame(maxWidth: .infinity)
@@ -104,17 +104,17 @@ struct NextWordView: View {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     Text(option.word)
-                        .font(.sprocket(17, .bold)).foregroundStyle(Theme.ink)
+                        .sprocketFont(17, .bold).foregroundStyle(Theme.ink)
                     if revealed && isTop {
                         Text("MODEL'S PICK")
-                            .font(.sprocket(9, .heavy)).foregroundStyle(.white)
+                            .sprocketFont(9, .heavy).foregroundStyle(.white)
                             .padding(.horizontal, 7).padding(.vertical, 3)
                             .background(Capsule().fill(tint))
                     }
                     Spacer()
                     if revealed {
                         Text("\(Int((option.probability * 100).rounded()))%")
-                            .font(.sprocket(15, .heavy)).monospacedDigit()
+                            .sprocketFont(15, .heavy).monospacedDigit()
                             .foregroundStyle(isTop ? tint : Theme.inkFaint)
                     } else if isPicked {
                         Image(systemName: "checkmark.circle.fill").foregroundStyle(tint)
@@ -159,7 +159,7 @@ struct NextWordView: View {
             Image(systemName: pickedIsTop ? "sparkles" : "lightbulb.fill")
                 .foregroundStyle(pickedIsTop ? Theme.correct : Theme.gentle)
             Text(round.insight)
-                .font(.sprocket(14)).foregroundStyle(Theme.ink)
+                .sprocketFont(14).foregroundStyle(Theme.ink)
             Spacer(minLength: 0)
         }
         .padding(14)

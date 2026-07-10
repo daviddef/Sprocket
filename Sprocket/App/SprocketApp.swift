@@ -27,6 +27,11 @@ struct SprocketApp: App {
                 .environmentObject(entitlements)
                 .tint(Theme.spark)
                 .preferredColorScheme(.light)
+                // Type scales with the reader's setting, but the skill map and
+                // lesson layouts are composed for a phone and start breaking
+                // words mid-syllable beyond AX2. Clamping there keeps a large,
+                // genuinely readable size without shipping broken screens.
+                .dynamicTypeSize(...DynamicTypeSize.accessibility2)
         }
     }
 
