@@ -26,6 +26,9 @@ struct ProfileProgress: Codable, Equatable {
     var narrationEnabled: Bool = false
     /// Retrieval-practice queue, keyed by `ReviewItem.id`.
     var reviewItems: [String: ReviewItem] = [:]
+    /// Lifetime count of review questions recalled correctly — the closest
+    /// thing the app has to evidence of durable learning, so it backs a badge.
+    var reviewsCorrect: Int = 0
 
     init() {}
 
@@ -40,5 +43,6 @@ struct ProfileProgress: Codable, Equatable {
         earnedBadges     = try c.decodeIfPresent(Set<String>.self, forKey: .earnedBadges) ?? []
         narrationEnabled = try c.decodeIfPresent(Bool.self, forKey: .narrationEnabled) ?? false
         reviewItems      = try c.decodeIfPresent([String: ReviewItem].self, forKey: .reviewItems) ?? [:]
+        reviewsCorrect   = try c.decodeIfPresent(Int.self, forKey: .reviewsCorrect) ?? 0
     }
 }

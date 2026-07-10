@@ -136,12 +136,18 @@ final class ProgressStore: ObservableObject {
         }
     }
 
-    func recordReview(_ item: ReviewItem, correct: Bool) {
+    @discardableResult
+    func recordReview(_ item: ReviewItem, correct: Bool) -> [Badge] {
         var updated = item
         updated.record(correct: correct, today: Date())
         reviewItems[updated.id] = updated
-        if correct { xp += Self.xpPerReview }
+        guard correct else { return [] }
+        xp += Self.xpPerReview
+        current.reviewsCorrect += 1
+        return awardBadges()
     }
+
+    var reviewsCorrect: Int { current.reviewsCorrect }
 
     /// A review session counts as showing up today, same as a lesson.
     func recordReviewSessionFinished() {
@@ -283,7 +289,13 @@ final class ProgressStore: ObservableObject {
 
     // MARK: - Badges
 
-    private func awardBadges(justFinished unit: Unit) -> [Badge] {
+    /// Evaluated after any event that could earn a badge — a finished unit or a
+    /// review answer. `justFinished` narrows the Idea Master check to the Big
+    /// Idea actually touched; nil evaluates every idea (used after review).
+    ///
+    /// The mastery-bearing badges require stars, not attendance: research found
+    /// completion-triggered badges have no measurable effect on learning.
+    private func awardBadges(justFinished unit: Unit? = nil) -> [Badge] {
         var newly: [Badge] = []
         func grant(_ badge: Badge) {
             guard !earnedBadges.contains(badge.rawValue) else { return }
@@ -291,14 +303,23 @@ final class ProgressStore: ObservableObject {
             newly.append(badge)
         }
 
+        // Participation — a welcome, and honest about being one.
         if completedCount >= 1 { grant(.firstStep) }
-        if completedCount >= 5 { grant(.curiousMind) }
         if currentStreak >= 3  { grant(.threeInARow) }
         if currentStreak >= 7  { grant(.weekStreak) }
 
-        let ideaUnits = Curriculum.units(in: tier, idea: unit.bigIdea)
-        if !ideaUnits.isEmpty, ideaUnits.allSatisfy({ isCompleted($0.id) }) {
-            grant(.ideaMaster)
+        // Mastery — earned by doing well, not by turning up.
+        let wellDone = track.filter { progress(for: $0.id).stars >= 2 }.count
+        if wellDone >= 5 { grant(.curiousMind) }
+        if reviewsCorrect >= 25 { grant(.wellRemembered) }
+
+        let ideas = unit.map { [$0.bigIdea] } ?? BigIdea.allCases
+        for idea in ideas {
+            let ideaUnits = Curriculum.units(in: tier, idea: idea)
+            if !ideaUnits.isEmpty,
+               ideaUnits.allSatisfy({ progress(for: $0.id).stars >= 3 }) {
+                grant(.ideaMaster)
+            }
         }
         if track.allSatisfy({ isCompleted($0.id) }) { grant(.graduate) }
 
